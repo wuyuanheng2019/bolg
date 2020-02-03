@@ -1,0 +1,23 @@
+##spring配置
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/myblog
+    username: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: password
+# 设置上传文件的大小
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+      enabled: true
+      resolve-lazily: false
+# mybatis-plush配置
+mybatis-plus:
+  # mapper 扫描
+  mapper-locations: mapper/*Mapper.xml
+  # 对应的实体类
+  type-aliases-package: com.ahoneybee.bolg.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
