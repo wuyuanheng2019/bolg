@@ -1,9 +1,21 @@
 package com.ahoneybee.bolg.controller;
 
 
+import com.ahoneybee.bolg.entity.ArticleInfo;
+import com.ahoneybee.bolg.entity.vo.ArticleInfoCategoryVo;
+import com.ahoneybee.bolg.service.IArticleInfoService;
+import com.ahoneybee.bolg.util.DataCheck;
+import com.ahoneybee.bolg.util.MyPages;
+import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,8 +25,21 @@ import org.springframework.web.bind.annotation.RestController;
  * @author wuyuanheng
  * @since 2020-02-04
  */
+@Slf4j
 @RestController
+@Api(value = "ArticleCategoryController", tags = {"文章分类接口文档"})
 @RequestMapping("/article-category")
 public class ArticleCategoryController {
+
+    @Autowired
+    private IArticleInfoService articleInfoService;
+
+
+    @ApiOperation(value = "分页查询文章列表", notes = "分页查询文章列表")
+    @GetMapping("/any/byTime")
+    public PageInfo<ArticleInfoCategoryVo> listArticleInfoByTime(MyPages myPages) {
+        return articleInfoService.listArticleInfo(myPages);
+    }
+
 
 }

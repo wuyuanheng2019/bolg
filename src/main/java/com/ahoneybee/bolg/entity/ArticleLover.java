@@ -11,18 +11,18 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 文章图片表
+ * 
  * </p>
  *
  * @author wuyuanheng
- * @since 2020-02-04
+ * @since 2020-02-05
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class ArticlePicture implements Serializable {
+public class ArticleLover implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -32,14 +32,14 @@ public class ArticlePicture implements Serializable {
     private long id;
 
     /**
-     * 文章的id
+     * 用户id
      */
-    private Integer articleId;
+    private Integer userId;
 
     /**
-     * 图片的url
+     * 文章id
      */
-    private String pictureUrl;
+    private Integer articleId;
 
     /**
      * 创建时间
@@ -50,16 +50,6 @@ public class ArticlePicture implements Serializable {
      * 创建人
      */
     private String createPersion;
-
-    /**
-     * 修改时间
-     */
-    private LocalDateTime updateTime;
-
-    /**
-     * 修改人
-     */
-    private String updatePersion;
 
 
 }

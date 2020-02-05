@@ -5,13 +5,32 @@ spring:
     username: root
     driver-class-name: com.mysql.cj.jdbc.Driver
     password: password
-# 设置上传文件的大小
+  # 设置上传文件的大小
   servlet:
     multipart:
       max-file-size: 50MB
       max-request-size: 50MB
       enabled: true
       resolve-lazily: false
+  # redis配置
+  redis:
+    # redis 服务器地址
+    host: 49.234.182.170
+    # 端口
+    port: 6379
+    # 链接超时时间
+    timeout: 5000
+    jedis:
+      pool:
+        # 连接池最大连结数
+        max-active: 8
+        # 连接池最大阻塞时间
+        max-wait: 1
+        # 连接池中最大空闲链接
+        max-idle: 8
+        # 连接池中最小空闲链接
+        min-idle: 0
+    password: wyh8231808@#@#
 # mybatis-plush配置
 mybatis-plus:
   # mapper 扫描
@@ -21,3 +40,16 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false
+# pagehelper
+pagehelper:
+  offset-as-page-num: true
+  row-bounds-with-count: true
+  page-size-zero: true
+  reasonable: false
+  params: pageNum=pageHelperStart;pageSize=pageHelperRows;
+  support-methods-arguments: false
+
+# logging
+logging:
+  level:
+    com.ahoneybee.bolg.mapper: debug;

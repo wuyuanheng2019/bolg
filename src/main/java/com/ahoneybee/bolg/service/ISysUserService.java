@@ -3,6 +3,8 @@ package com.ahoneybee.bolg.service;
 import com.ahoneybee.bolg.entity.SysUser;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * <p>
  * 人员表 服务类
@@ -13,4 +15,37 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ISysUserService extends IService<SysUser> {
 
+    /**
+     * 1 通过nginx得到访客ip地址
+     * 2 判断ip地址是否在user表中存在,存在则加一
+     *
+     * @param request 前端请求
+     * @return 是否保存成功
+     */
+    boolean saveUser(HttpServletRequest request);
+
+
+    /**
+     * 通过ip来查询用户
+     *
+     * @param ip 用户ip地址
+     * @return 详细信息
+     */
+    SysUser getByIp(String ip);
+
+
+    /**
+     * 获取用户数量
+     *
+     * @return 数量
+     */
+    long getUserNum();
+
+
+    /**
+     * 获取用户总访问量
+     *
+     * @return 总量
+     */
+    long getUserLogNum();
 }

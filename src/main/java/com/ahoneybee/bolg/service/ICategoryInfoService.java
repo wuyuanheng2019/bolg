@@ -3,6 +3,8 @@ package com.ahoneybee.bolg.service;
 import com.ahoneybee.bolg.entity.CategoryInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 分类信息表 服务类
@@ -13,4 +15,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ICategoryInfoService extends IService<CategoryInfo> {
 
+
+    /**
+     * 查询文章分类
+     *
+     * @param id 文章id
+     * @return 结果集
+     */
+    List<String> listCategoryByArticleId(long id);
 }

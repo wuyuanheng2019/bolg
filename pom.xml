@@ -22,6 +22,7 @@
         <swagger2.version>2.9.2</swagger2.version>
         <xiaoming-swagger.version>1.9.4</xiaoming-swagger.version>
         <hutool.version>4.5.16</hutool.version>
+        <pagehelper.version>1.2.13</pagehelper.version>
     </properties>
 
     <dependencies>
@@ -110,6 +111,18 @@
             <version>${hutool.version}</version>
         </dependency>
 
+        <!--pagehelper-->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>${pagehelper.version}</version>
+        </dependency>
+
+        <!--redis-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
 
     </dependencies>
 

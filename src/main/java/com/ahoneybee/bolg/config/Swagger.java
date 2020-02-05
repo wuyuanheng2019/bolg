@@ -10,9 +10,17 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+/**
+ * <p>
+ * Swagger配置
+ * </p>
+ *
+ * @author wuyuanheng
+ * @since 2020-02-05
+ */
 @Configuration
 @EnableSwagger2
-public class Swagger{
+public class Swagger {
 
     @Bean
     public Docket createRestApi() {
