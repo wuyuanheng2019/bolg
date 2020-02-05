@@ -19,8 +19,8 @@ public interface ICategoryInfoService extends IService<CategoryInfo> {
     /**
      * 查询文章分类
      *
-     * @param id 文章id
+     * @param articleId 文章id
      * @return 结果集
      */
-    List<String> listCategoryByArticleId(long id);
+    List<String> listCategoryByArticleId(long articleId);
 }

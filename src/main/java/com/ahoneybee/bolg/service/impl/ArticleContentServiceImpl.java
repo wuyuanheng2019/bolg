@@ -17,4 +17,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ArticleContentServiceImpl extends ServiceImpl<ArticleContentMapper, ArticleContent> implements IArticleContentService {
 
+    @Override
+    public ArticleContent getByArticleId(long articleId) {
+        return lambdaQuery().eq(ArticleContent::getArticleId, articleId).one();
+    }
 }

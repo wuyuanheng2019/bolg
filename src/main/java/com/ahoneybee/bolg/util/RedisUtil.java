@@ -11,6 +11,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * <p>
+ * redis工具类
+ * </p>
+ *
+ * @author wuyuanheng
+ * @since 2020-02-05
+ */
 @Slf4j
 @Component
 public final class RedisUtil {
@@ -33,7 +41,7 @@ public final class RedisUtil {
             }
             return true;
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             return false;
         }
     }
@@ -58,7 +66,7 @@ public final class RedisUtil {
         try {
             return redisTemplate.hasKey(key);
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             return false;
         }
     }
@@ -102,7 +110,7 @@ public final class RedisUtil {
             redisTemplate.opsForValue().set(key, value);
             return true;
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             return false;
         }
     }
@@ -124,7 +132,7 @@ public final class RedisUtil {
             }
             return true;
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             return false;
         }
     }
@@ -191,7 +199,7 @@ public final class RedisUtil {
             redisTemplate.opsForHash().putAll(key, map);
             return true;
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             return false;
         }
     }
@@ -212,7 +220,7 @@ public final class RedisUtil {
             }
             return true;
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             return false;
         }
     }
@@ -230,7 +238,7 @@ public final class RedisUtil {
             redisTemplate.opsForHash().put(key, item, value);
             return true;
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             return false;
         }
     }
@@ -252,7 +260,7 @@ public final class RedisUtil {
             }
             return true;
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             return false;
         }
     }
@@ -313,7 +321,7 @@ public final class RedisUtil {
         try {
             return redisTemplate.opsForSet().members(key);
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             return null;
         }
     }
@@ -329,7 +337,7 @@ public final class RedisUtil {
         try {
             return redisTemplate.opsForSet().isMember(key, value);
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             return false;
         }
     }
@@ -345,7 +353,7 @@ public final class RedisUtil {
         try {
             return redisTemplate.opsForSet().add(key, values);
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             return 0;
         }
     }
@@ -361,12 +369,12 @@ public final class RedisUtil {
     public long sSetAndTime(String key, long time, Object... values) {
         try {
             Long count = redisTemplate.opsForSet().add(key, values);
-            if (time > 0){
+            if (time > 0) {
                 expire(key, time);
             }
             return count;
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             return 0;
         }
     }
@@ -381,7 +389,7 @@ public final class RedisUtil {
         try {
             return redisTemplate.opsForSet().size(key);
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             return 0;
         }
     }
@@ -397,7 +405,7 @@ public final class RedisUtil {
         try {
             return redisTemplate.opsForSet().remove(key, values);
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             return 0;
         }
     }
@@ -415,7 +423,7 @@ public final class RedisUtil {
         try {
             return redisTemplate.opsForList().range(key, start, end);
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             return null;
         }
     }
@@ -430,7 +438,7 @@ public final class RedisUtil {
         try {
             return redisTemplate.opsForList().size(key);
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             return 0;
         }
     }
@@ -446,7 +454,7 @@ public final class RedisUtil {
         try {
             return redisTemplate.opsForList().index(key, index);
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             return null;
         }
     }
@@ -463,7 +471,7 @@ public final class RedisUtil {
             redisTemplate.opsForList().rightPush(key, value);
             return true;
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             return false;
         }
     }
@@ -483,7 +491,7 @@ public final class RedisUtil {
                 expire(key, time);
             return true;
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             return false;
         }
     }
@@ -500,7 +508,7 @@ public final class RedisUtil {
             redisTemplate.opsForList().rightPushAll(key, value);
             return true;
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             return false;
         }
     }
@@ -520,7 +528,7 @@ public final class RedisUtil {
                 expire(key, time);
             return true;
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             return false;
         }
     }
@@ -538,7 +546,7 @@ public final class RedisUtil {
             redisTemplate.opsForList().set(key, index, value);
             return true;
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             return false;
         }
     }
@@ -555,7 +563,7 @@ public final class RedisUtil {
         try {
             return redisTemplate.opsForList().remove(key, count, value);
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             return 0;
         }
     }

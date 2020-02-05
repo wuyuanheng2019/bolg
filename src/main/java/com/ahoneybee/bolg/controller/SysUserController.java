@@ -24,25 +24,28 @@ import javax.servlet.http.HttpServletRequest;
 @Api(value = "SysUserController", tags = {"用户接口文档"})
 public class SysUserController {
 
-    @Autowired
-    private ISysUserService userService;
+    private final ISysUserService userService;
 
-    @ApiOperation(value = "用户保存", notes = "用户保存")
+    public SysUserController(ISysUserService userService) {
+        this.userService = userService;
+    }
+
     @PostMapping("/any/saveUser")
+    @ApiOperation(value = "用户保存", notes = "用户保存")
     public boolean postUser(HttpServletRequest request) {
         return userService.saveUser(request);
     }
 
 
-    @ApiOperation(value = "用户数量", notes = "用户数量")
     @GetMapping("/any/getUserNum")
+    @ApiOperation(value = "用户数量", notes = "用户数量")
     public long getUserNum() {
         return userService.getUserNum();
     }
 
 
-    @ApiOperation(value = "总访问量", notes = "总访问量")
     @GetMapping("/any/getUserLogNum")
+    @ApiOperation(value = "总访问量", notes = "总访问量")
     public long getUserLogNum() {
         return userService.getUserLogNum();
     }

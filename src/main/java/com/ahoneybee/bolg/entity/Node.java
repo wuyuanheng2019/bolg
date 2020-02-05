@@ -1,5 +1,9 @@
 package com.ahoneybee.bolg.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
 /**
@@ -10,6 +14,9 @@ import java.util.List;
  * @author wuyuanheng
  * @since 2020-02-05
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Node {
 
     /**

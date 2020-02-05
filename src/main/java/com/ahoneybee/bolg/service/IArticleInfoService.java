@@ -37,4 +37,12 @@ public interface IArticleInfoService extends IService<ArticleInfo> {
      * @return 结果集
      */
     PageInfo<ArticleInfoCategoryVo> listArticleInfo(MyPages myPages);
+
+    /**
+     * 文章详细信息(点赞，评论，内容等)
+     *
+     * @param id 文章id
+     * @return 结果集
+     */
+    List<Object> getArticle(long id);
 }

@@ -6,6 +6,8 @@ import com.ahoneybee.bolg.service.ICommentInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  * 评论详情表 服务实现类
@@ -17,4 +19,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class CommentInfoServiceImpl extends ServiceImpl<CommentInfoMapper, CommentInfo> implements ICommentInfoService {
 
+    @Override
+    public List<CommentInfo> listInfoByArticleId(long articleId) {
+        return baseMapper.listInfoByArticleId(articleId);
+    }
 }

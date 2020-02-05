@@ -23,10 +23,10 @@ public interface CategoryInfoMapper extends BaseMapper<CategoryInfo> {
      * @param id 文章id
      * @return 单个分类
      */
-    @Select(value = "select c.* " +
-            "from category_info c " +
-            "join article_category ac on c.id = ac.category_id " +
-            "join article_info a on a.id = ac.article_id " +
-            "where a.id = #{id}")
+    @Select(value = "SELECT c.* " +
+            "FROM category_info c " +
+            "JOIN article_category ac on c.id = ac.category_id " +
+            "JOIN article_info a on a.id = ac.article_id " +
+            "WHERE a.id = #{id}")
     CategoryInfo listCategoryByArticleId(long id);
 }

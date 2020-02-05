@@ -24,7 +24,7 @@ import java.util.List;
 public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, CategoryInfo> implements ICategoryInfoService {
 
     @Override
-    public List<String> listCategoryByArticleId(long id) {
+    public List<String> listCategoryByArticleId(long articleId) {
 
         /*
          * 1 文章分类表设计为递归结构(pid -> id)
@@ -33,7 +33,7 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
          * 4 整合并进行封装
          */
         List<String> list = Collections.synchronizedList(new ArrayList<>());
-        CategoryInfo categoryInfo = baseMapper.listCategoryByArticleId(id);
+        CategoryInfo categoryInfo = baseMapper.listCategoryByArticleId(articleId);
         return findInfo(categoryInfo, list);
     }
 
