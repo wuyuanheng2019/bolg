@@ -50,7 +50,16 @@ public interface IArticleInfoService extends IService<ArticleInfo> {
      * 访问量自增
      *
      * @param articleInfo 文章信息
+     */
+    void saveTraffic(ArticleInfo articleInfo);
+
+    /**
+     * 点赞
+     *
+     * @param aid  文章id
+     * @param ip   用户ip
+     * @param flag 标识(是否点赞)
      * @return 是否成功
      */
-    boolean saveTraffic(ArticleInfo articleInfo);
+    boolean updateArticleInfo(long aid, String ip, boolean flag);
 }

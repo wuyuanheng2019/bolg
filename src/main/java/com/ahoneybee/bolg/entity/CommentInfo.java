@@ -52,6 +52,11 @@ public class CommentInfo implements Serializable {
     private String ip;
 
     /**
+     * 评论人id
+     */
+    private Long userId;
+
+    /**
      * 父id
      */
     private Long parentId;

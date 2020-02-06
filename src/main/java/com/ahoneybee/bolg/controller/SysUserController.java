@@ -1,12 +1,15 @@
 package com.ahoneybee.bolg.controller;
 
 
+import com.ahoneybee.bolg.entity.SysUser;
 import com.ahoneybee.bolg.service.ISysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -49,4 +52,12 @@ public class SysUserController {
     public long getUserLogNum() {
         return userService.getUserLogNum();
     }
+
+
+    @GetMapping("/any/getUserByIp")
+    @ApiOperation(value = "通过ip查找用户", notes = "通过ip查找用户")
+    public SysUser getUserByIp(HttpServletRequest request) {
+        return userService.getByIp(request.getHeader("X-Real-Ip"));
+    }
+
 }

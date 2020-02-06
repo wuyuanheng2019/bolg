@@ -32,6 +32,9 @@ import java.util.List;
 @Api(value = "ArticleController", tags = {"文章接口文档"})
 public class ArticleController {
 
+    /**
+     * 文章内容service
+     */
     private final IArticleInfoService articleInfoService;
 
     public ArticleController(IArticleInfoService articleInfoService) {
@@ -45,6 +48,7 @@ public class ArticleController {
         return articleInfoService.listArticleInfo(myPages);
     }
 
+
     @GetMapping("/any/article")
     @ApiModelProperty(value = "id", example = "1")
     @ApiOperation(value = "查询文章详情页", notes = "查询文章详情页")
@@ -52,11 +56,13 @@ public class ArticleController {
         return articleInfoService.getArticle(id);
     }
 
+
     @GetMapping("/any/byId")
     @ApiModelProperty(value = "id", example = "1")
     @ApiOperation(value = "查询文章信息(单条)", notes = "查询文章信息(单条)")
     public ArticleInfo getArticleInfoById(long id) {
         return articleInfoService.getById(id);
     }
+
 
 }

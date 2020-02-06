@@ -5,7 +5,6 @@ import com.ahoneybee.bolg.mapper.SysUserMapper;
 import com.ahoneybee.bolg.service.ISysUserService;
 import com.ahoneybee.bolg.util.Ip2Region;
 import com.ahoneybee.bolg.util.OperateByUtils;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -28,9 +27,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public boolean saveUser(HttpServletRequest request) {
         //创建标志
         boolean flag = true;
-
         try {
-
             //获取并检测用户ip
             String ip = request.getHeader("X-Real-Ip");
             Ip2Region.judgeIp(ip);
@@ -41,14 +38,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 save(new SysUser()
                         .setIp(ip)
                         .setRole("ANY")
-                        .setName("VISITOR")
                         .setRegion(Ip2Region.sendGet(ip))
                         .setBrowser(OperateByUtils.getOsAndBrowserInfo(request)));
+            } else {
+                lambdaUpdate()
+                        .eq(SysUser::getIp, user.getIp())
+                        .set(SysUser::getNum, user.getNum() + 1).update();
             }
-
-            lambdaUpdate()
-                    .eq(SysUser::getIp, user.getIp())
-                    .set(SysUser::getNum, user.getNum() + 1).update();
 
         } catch (Exception e) {
             flag = false;

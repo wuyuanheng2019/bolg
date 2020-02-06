@@ -3,15 +3,14 @@ package com.ahoneybee.bolg.service.impl;
 import com.ahoneybee.bolg.entity.ArticleInfo;
 import com.ahoneybee.bolg.entity.vo.ArticleInfoCategoryVo;
 import com.ahoneybee.bolg.mapper.ArticleInfoMapper;
-import com.ahoneybee.bolg.service.IArticleContentService;
-import com.ahoneybee.bolg.service.IArticleInfoService;
-import com.ahoneybee.bolg.service.ICategoryInfoService;
-import com.ahoneybee.bolg.service.ICommentInfoService;
+import com.ahoneybee.bolg.service.*;
+import com.ahoneybee.bolg.util.Ip2Region;
 import com.ahoneybee.bolg.util.MyPages;
 import com.ahoneybee.bolg.util.TreeUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -35,14 +34,18 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
 
     private final ICategoryInfoService categoryInfoService;
 
+    private final IArticleLoverService articleLoverService;
+
     public ArticleInfoServiceImpl(ICategoryInfoService categoryInfoService,
                                   IArticleContentService articleContentService,
-                                  ICommentInfoService commentInfoService) {
+                                  ICommentInfoService commentInfoService,
+                                  IArticleLoverService articleLoverService) {
 
         this.categoryInfoService = categoryInfoService;
         this.articleContentService = articleContentService;
         this.commentInfoService = commentInfoService;
 
+        this.articleLoverService = articleLoverService;
     }
 
     @Override
@@ -88,11 +91,30 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
     }
 
     @Override
-    public boolean saveTraffic(ArticleInfo articleInfo) {
-        return lambdaUpdate()
+    public void saveTraffic(ArticleInfo articleInfo) {
+        lambdaUpdate()
                 .set(ArticleInfo::getTraffic, articleInfo.getTraffic() + 1)
                 .eq(ArticleInfo::getId, articleInfo.getId())
                 .update();
+    }
+
+    @Override
+    public boolean updateArticleInfo(long aid, String ip, boolean flag) {
+
+        //nginx配置ip，检验
+        Ip2Region.judgeIp(ip);
+
+        //点赞 or 取消点赞
+        if (flag) {
+            baseMapper.updateArticleLov(aid, 1);
+            articleLoverService.insertArticleLover(aid, ip);
+        } else {
+            baseMapper.updateArticleLov(aid, -1);
+            articleLoverService.deleteArticleLover(aid, ip);
+        }
+
+        return true;
+
     }
 
 }

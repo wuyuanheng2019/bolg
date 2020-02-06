@@ -1,13 +1,13 @@
 package com.ahoneybee.bolg.entity;
 
-import java.time.LocalDateTime;
-import java.io.Serializable;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -34,12 +34,12 @@ public class ArticleComment implements Serializable {
     /**
      * 文章主键
      */
-    private Integer articleId;
+    private Long articleId;
 
     /**
      * 评论主键
      */
-    private Integer commentId;
+    private long commentId;
 
     /**
      * 是否被删除: 0为没有
