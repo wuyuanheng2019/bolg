@@ -75,12 +75,13 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
         //创建封装对象
         List<Object> list = Collections.synchronizedList(new ArrayList<>());
 
-        //添加文章内容，文章分类，评论
+        //添加文章内容，评论，分类
         list.add(articleContentService.getByArticleId(articleId));
-        list.add(categoryInfoService.listCategoryByArticleId(articleId));
         list.add(TreeUtils.buildTree(commentInfoService.listInfoByArticleId(articleId), articleId));
+        list.add(categoryInfoService.listCategoryByArticleId(articleId));
 
-        //访问量+1
+
+        //文章访问量+1
         saveTraffic(getById(articleId));
 
         return list;

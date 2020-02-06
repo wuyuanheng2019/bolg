@@ -23,7 +23,7 @@ public interface CategoryInfoMapper extends BaseMapper<CategoryInfo> {
      * @param id 文章id
      * @return 单个分类
      */
-    @Select(value = "SELECT c.* " +
+    @Select(value = "SELECT c.id, c.name, c.number, c.parent_id " +
             "FROM category_info c " +
             "JOIN article_category ac on c.id = ac.category_id " +
             "JOIN article_info a on a.id = ac.article_id " +

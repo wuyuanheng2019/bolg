@@ -30,7 +30,7 @@ public class SysUserController {
         this.userService = userService;
     }
 
-    @PostMapping("/any/saveUser")
+    @PostMapping("/any/postUser")
     @ApiOperation(value = "用户保存", notes = "用户保存")
     public boolean postUser(HttpServletRequest request) {
         return userService.saveUser(request);

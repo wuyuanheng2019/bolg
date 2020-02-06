@@ -2,7 +2,6 @@ package com.ahoneybee.bolg.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.ahoneybee.bolg.entity.CategoryInfo;
-import com.ahoneybee.bolg.entity.vo.ArticleInfoCategoryVo;
 import com.ahoneybee.bolg.mapper.CategoryInfoMapper;
 import com.ahoneybee.bolg.service.ICategoryInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -49,8 +48,8 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
         if (categoryInfo != null) {
             list.add(
                     lambdaQuery()
-                            .eq(CategoryInfo::getId, categoryInfo.getId())
-                            .one().getName()
+                            .select(CategoryInfo::getName)
+                            .eq(CategoryInfo::getId, categoryInfo.getId()).one().getName()
             );
 
             categoryInfo = getById(categoryInfo.getParentId());

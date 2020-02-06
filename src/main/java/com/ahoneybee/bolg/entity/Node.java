@@ -25,14 +25,15 @@ public class Node {
     private Object object;
 
     /**
-     * 父类id
-     */
-    private long parentId;
-
-    /**
      * 自己id
      */
-    private long id;
+    private Long id;
+
+    /**
+     * 父类id
+     */
+    private Long parentId;
+
 
     /**
      * 放置子类

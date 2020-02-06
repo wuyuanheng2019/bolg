@@ -3,6 +3,8 @@ package com.ahoneybee.bolg.util;
 import cn.hutool.core.collection.CollectionUtil;
 import com.ahoneybee.bolg.entity.CommentInfo;
 import com.ahoneybee.bolg.entity.Node;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,6 +18,7 @@ import java.util.List;
  * @author wuyuanheng
  * @since 2020-02-05
  */
+@Slf4j
 public class TreeUtils {
 
     /**
@@ -34,34 +37,47 @@ public class TreeUtils {
          * 4 在 father 中移除该子节点
          */
         Node tree = new Node();
-        List<Node> children = Collections.synchronizedList(new ArrayList<>());
+        List<Node> childrens = Collections.synchronizedList(new ArrayList<>());
+        List<Node> operlist = Collections.synchronizedList(new ArrayList<>());
 
-        creadNode(commentInfo, articleId, tree, children);
+        creadNode(commentInfo, articleId, tree, childrens);
 
-        children.parallelStream().forEach(node -> {
-            Node no = findFatherNode(children, node.getParentId());
-            judge(children, node, no);
+        childrens.forEach(node -> {
+            Node no = findFatherNode(childrens, node.getParentId());
+            judge(operlist, node, no);
         });
+
+        childrens.removeAll(operlist);
         return tree;
     }
 
     /**
      * 判断是否存在父节点，并作出相应的处理
      *
-     * @param children 节点
+     * @param operlist 操作节点(记录要移除的node)
      * @param node     当前节点
      * @param no       父节点
      */
-    private static void judge(List<Node> children, Node node, Node no) {
-        if (no != null) {
+    private static void judge(List<Node> operlist, Node node, Node no) {
+
+        //判断是否存在
+        if (ObjectUtils.isNotEmpty(no)) {
+
+            //判断当前父节点是否存在子节点
             if (CollectionUtil.isNotEmpty(no.getChildren())) {
+
                 no.getChildren().add(node);
             } else {
+
+                //创建子节点，并设置
                 List<Node> childrenList = Collections.synchronizedList(new ArrayList<>());
                 childrenList.add(node);
                 no.setChildren(childrenList);
+
             }
-            children.remove(node);
+
+            //记录需要移除的节点
+            operlist.add(node);
         }
     }
 
@@ -72,11 +88,11 @@ public class TreeUtils {
      * @param parentId  父id
      * @return 父节点
      */
-    private static Node findFatherNode(List<Node> childrens, long parentId) {
+    private static Node findFatherNode(List<Node> childrens, Long parentId) {
 
-        for (Node node : childrens) {
-            if (node.getId() == parentId) {
-                return node;
+        for (Node n : childrens) {
+            if (n.getId().equals(parentId)) {
+                return n;
             }
         }
         return null;
@@ -92,10 +108,10 @@ public class TreeUtils {
     private static void creadNode(List<CommentInfo> commentInfos, long articleId, Node tree, List<Node> children) {
 
         //创建子节点
-        commentInfos.parallelStream().forEach(commentInfo -> {
+        commentInfos.forEach(commentInfo -> {
             children.add(
-                    new Node(commentInfo, commentInfo.getParentId(), commentInfo.getId(), null)
-            );
+                    new Node(commentInfo, commentInfo.getId(),
+                            commentInfo.getParentId(), null));
         });
         tree.setId(articleId);
         tree.setChildren(children);
