@@ -8,10 +8,10 @@ import com.ahoneybee.bolg.service.IArticleInfoService;
 import com.ahoneybee.bolg.service.ICategoryInfoService;
 import com.ahoneybee.bolg.service.ICommentInfoService;
 import com.ahoneybee.bolg.util.MyPages;
+import com.ahoneybee.bolg.util.TreeUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -35,10 +35,14 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
 
     private final ICategoryInfoService categoryInfoService;
 
-    public ArticleInfoServiceImpl(ICategoryInfoService categoryInfoService, IArticleContentService articleContentService, ICommentInfoService commentInfoService) {
+    public ArticleInfoServiceImpl(ICategoryInfoService categoryInfoService,
+                                  IArticleContentService articleContentService,
+                                  ICommentInfoService commentInfoService) {
+
         this.categoryInfoService = categoryInfoService;
         this.articleContentService = articleContentService;
         this.commentInfoService = commentInfoService;
+
     }
 
     @Override
@@ -66,16 +70,28 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
     }
 
     @Override
-    public List<Object> getArticle(long id) {
+    public List<Object> getArticle(long articleId) {
 
         //创建封装对象
         List<Object> list = Collections.synchronizedList(new ArrayList<>());
 
         //添加文章内容，文章分类，评论
-        list.add(articleContentService.getByArticleId(id));
-        list.add(categoryInfoService.listCategoryByArticleId(id));
-        list.add(commentInfoService.listInfoByArticleId(id));
+        list.add(articleContentService.getByArticleId(articleId));
+        list.add(categoryInfoService.listCategoryByArticleId(articleId));
+        list.add(TreeUtils.buildTree(commentInfoService.listInfoByArticleId(articleId), articleId));
+
+        //访问量+1
+        saveTraffic(getById(articleId));
 
         return list;
     }
+
+    @Override
+    public boolean saveTraffic(ArticleInfo articleInfo) {
+        return lambdaUpdate()
+                .set(ArticleInfo::getTraffic, articleInfo.getTraffic() + 1)
+                .eq(ArticleInfo::getId, articleInfo.getId())
+                .update();
+    }
+
 }

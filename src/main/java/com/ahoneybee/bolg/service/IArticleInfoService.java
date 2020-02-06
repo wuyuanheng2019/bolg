@@ -41,8 +41,16 @@ public interface IArticleInfoService extends IService<ArticleInfo> {
     /**
      * 文章详细信息(点赞，评论，内容等)
      *
-     * @param id 文章id
+     * @param articleId 文章id
      * @return 结果集
      */
-    List<Object> getArticle(long id);
+    List<Object> getArticle(long articleId);
+
+    /**
+     * 访问量自增
+     *
+     * @param articleInfo 文章信息
+     * @return 是否成功
+     */
+    boolean saveTraffic(ArticleInfo articleInfo);
 }
