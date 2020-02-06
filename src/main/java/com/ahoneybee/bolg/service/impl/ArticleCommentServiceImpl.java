@@ -59,8 +59,10 @@ public class ArticleCommentServiceImpl extends ServiceImpl<ArticleCommentMapper,
                     .eq(SysUser::getIp, sysUser.getIp())
                     .set(SysUser::getRole, "USER")
                     .set(SysUser::getNum, sysUser.getNum() + 1)
-                    .set(StringUtils.isNotEmpty(commentInfo.getConnect()), SysUser::getConnect, commentInfo.getConnect())
-                    .set(StringUtils.isNotEmpty(sysUser.getName()), SysUser::getName, commentInfo.getName())
+                    .set(StringUtils.isNotEmpty(sysUser.getName()),
+                            SysUser::getName, commentInfo.getName())
+                    .set(StringUtils.isNotEmpty(commentInfo.getConnect()),
+                            SysUser::getConnect, commentInfo.getConnect())
                     .update();
 
         } else {
