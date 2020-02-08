@@ -29,7 +29,7 @@ public class ArticleInfo implements Serializable {
     /**
      * id
      */
-    private long id;
+    private Long id;
 
     /**
      * 标题

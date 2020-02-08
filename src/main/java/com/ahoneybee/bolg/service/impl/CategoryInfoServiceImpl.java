@@ -31,9 +31,15 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
          * 3 通过分类信息找到父类信息
          * 4 整合并进行封装
          */
-        List<String> list = Collections.synchronizedList(new ArrayList<>());
+        List<CategoryInfo> list = new ArrayList<>();
+        List<String> listStr = Collections.synchronizedList(new ArrayList<>());
         CategoryInfo categoryInfo = baseMapper.listCategoryByArticleId(articleId);
-        return findInfoUp(categoryInfo, list);
+
+        //存放
+        findInfoUp(categoryInfo, list).parallelStream().forEach(info -> {
+            listStr.add(info.getName());
+        });
+        return listStr;
     }
 
     @Override
@@ -49,6 +55,21 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
         return findInfoDown(categoryId, list);
     }
 
+    @Override
+    public void updateCategoryNumById(Long categoryId, int num) {
+
+        List<CategoryInfo> list = new ArrayList<>();
+        CategoryInfo categoryInfo = baseMapper.listCategoryByArticleId(categoryId);
+
+        //更新节点下的文章数量
+        findInfoUp(categoryInfo, list).forEach(info -> {
+            lambdaUpdate()
+                    .eq(CategoryInfo::getId, info.getId())
+                    .set(CategoryInfo::getNumber, info.getNumber() + num)
+                    .update();
+        });
+    }
+
     /**
      * 递归调用 所有子集合的id(向下调用)
      *
@@ -62,6 +83,7 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
         List<CategoryInfo> categoryInfoList = lambdaQuery().in(CategoryInfo::getParentId, categoryId).list();
 
         if (CollectionUtil.isNotEmpty(categoryInfoList)) {
+
             //一对多的映射关系，多线程调用
             categoryInfoList.parallelStream().forEach(
                     categoryInfo -> {
@@ -77,22 +99,25 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
      * 递归调用 查找所有类型 (向上调用)
      *
      * @param categoryInfo 分类信息
-     * @param list         容器(存放找到的 categoryName )
+     * @param list         容器(存放找到的 categoryInfo )
      * @return 分类名称集合
      */
-    private List<String> findInfoUp(CategoryInfo categoryInfo, List<String> list) {
+    private List<CategoryInfo> findInfoUp(CategoryInfo categoryInfo, List<CategoryInfo> list) {
 
         if (categoryInfo != null) {
-            list.add(
-                    //找到父节点
-                    lambdaQuery()
-                            .select(CategoryInfo::getName)
-                            .eq(CategoryInfo::getId, categoryInfo.getId()).one().getName()
+
+            //找到父节点并田间操作
+            list.add(lambdaQuery()
+                    .select(CategoryInfo::getId)
+                    .select(CategoryInfo::getName)
+                    .select(CategoryInfo::getNumber)
+                    .eq(CategoryInfo::getId, categoryInfo.getId())
+                    .one()
             );
 
             categoryInfo = getById(categoryInfo.getParentId());
             findInfoUp(categoryInfo, list);
         }
-        return CollectionUtil.reverse(list);
+        return list;
     }
 }

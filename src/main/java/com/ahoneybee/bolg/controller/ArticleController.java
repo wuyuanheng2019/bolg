@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -69,4 +70,11 @@ public class ArticleController {
         return articleInfoService.listArticleInfoByCategory(categoryId, pages);
     }
 
+
+    @PostMapping("/admin/postArticle")
+    @ApiModelProperty(value = "map", required = true)
+    @ApiOperation(value = "保存", notes = "保存")
+    public boolean postArticle(@RequestBody Map<String, Object> map) {
+        return articleInfoService.postArticle(map);
+    }
 }

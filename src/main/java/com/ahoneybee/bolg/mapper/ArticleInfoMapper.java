@@ -44,4 +44,12 @@ public interface ArticleInfoMapper extends BaseMapper<ArticleInfo> {
             "order by create_by desc",
             "</script>"})
     List<ArticleInfo> listArticleInfoByCategory(List<Long> categoryIds);
+
+    /**
+     * 插入文章信息
+     *
+     * @param articleInfo 文章信息，包含title和summary
+     * @return long
+     */
+    long insertArticleInfo(ArticleInfo articleInfo);
 }

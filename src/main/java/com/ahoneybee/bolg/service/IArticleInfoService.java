@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -71,4 +72,12 @@ public interface IArticleInfoService extends IService<ArticleInfo> {
      * @return 结果集
      */
     PageInfo<ArticleInfoCategoryVo> listArticleInfoByCategory(long categoryId, MyPages pages);
+
+    /**
+     * 保存文章(及其信息等)
+     *
+     * @param map 两个元素，1 文章信息，2 文章内容，3 文章和分类间的list映射
+     * @return 成功为true，失败为false(是否成功保存)
+     */
+    boolean postArticle(Map<String, Object> map);
 }

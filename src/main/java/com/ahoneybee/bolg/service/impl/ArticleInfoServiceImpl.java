@@ -1,5 +1,7 @@
 package com.ahoneybee.bolg.service.impl;
 
+import com.ahoneybee.bolg.entity.ArticleCategory;
+import com.ahoneybee.bolg.entity.ArticleContent;
 import com.ahoneybee.bolg.entity.ArticleInfo;
 import com.ahoneybee.bolg.entity.vo.ArticleInfoCategoryVo;
 import com.ahoneybee.bolg.mapper.ArticleInfoMapper;
@@ -8,6 +10,7 @@ import com.ahoneybee.bolg.util.Ip2Region;
 import com.ahoneybee.bolg.util.MyPages;
 import com.ahoneybee.bolg.util.TreeUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -35,13 +39,16 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
 
     private final IArticleLoverService articleLoverService;
 
+    private final IArticleCategoryService articleCategoryService;
+
     public ArticleInfoServiceImpl(ICategoryInfoService categoryInfoService, IArticleContentService articleContentService,
-                                  ICommentInfoService commentInfoService, IArticleLoverService articleLoverService) {
+                                  ICommentInfoService commentInfoService, IArticleLoverService articleLoverService, IArticleCategoryService articleCategoryService) {
 
         this.categoryInfoService = categoryInfoService;
         this.articleContentService = articleContentService;
         this.commentInfoService = commentInfoService;
         this.articleLoverService = articleLoverService;
+        this.articleCategoryService = articleCategoryService;
     }
 
     @Override
@@ -121,6 +128,60 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
         //查询文章信息
         List<ArticleInfo> infos = baseMapper.listArticleInfoByCategory(categoryIds);
         return getArticleInfoCategoryVo(infos);
+
+    }
+
+    @Override
+    public boolean postArticle(Map<String, Object> map) {
+
+        /*
+         * 1 读取前台传入的文章信息
+         * 2 保存，并创建文章及其分类关联信息
+         * 3 返回信息
+         */
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            ArticleInfo articleInfo = objectMapper.readValue(
+                    objectMapper.writeValueAsString(map.get("articleInfo")), ArticleInfo.class);
+
+            ArticleContent articleContent = objectMapper.readValue(
+                    objectMapper.writeValueAsString(map.get("articleContent")), ArticleContent.class);
+
+            ArticleCategory articleCategory = objectMapper.readValue(
+                    objectMapper.writeValueAsString(map.get("articleCategory")), ArticleCategory.class);
+
+            //db操作
+            insertArticleAndInfo(articleInfo, articleContent, articleCategory);
+
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * 添加文章
+     *
+     * @param articleInfo     文章摘要
+     * @param articleContent  文章信息
+     * @param articleCategory 分类信息
+     */
+    private void insertArticleAndInfo(ArticleInfo articleInfo, ArticleContent articleContent,
+                                      ArticleCategory articleCategory) {
+        //文章
+        baseMapper.insertArticleInfo(articleInfo);
+        Long id = articleInfo.getId();
+
+        //文章内容，分类
+        articleContent.setArticleId(id);
+        articleContentService.save(articleContent);
+        articleCategory.setArticleId(id);
+        articleCategoryService.save(articleCategory);
+
+        //更新分类及其父分类 num++
+        categoryInfoService.updateCategoryNumById(articleCategory.getCategoryId(), 1);
 
     }
 

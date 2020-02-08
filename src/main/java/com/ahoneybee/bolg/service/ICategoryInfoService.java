@@ -33,4 +33,11 @@ public interface ICategoryInfoService extends IService<CategoryInfo> {
      */
     List<Long> findSon(Long categoryId);
 
+    /**
+     * 通过id 更新当前节点以及父节点下的 num
+     *
+     * @param categoryId 当前节点 id
+     * @param num        节点下的文章
+     */
+    void updateCategoryNumById(Long categoryId, int num);
 }

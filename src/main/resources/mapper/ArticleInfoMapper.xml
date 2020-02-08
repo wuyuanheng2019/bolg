@@ -2,4 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ahoneybee.bolg.mapper.ArticleInfoMapper">
 
+
+    <insert id="insertArticleInfo" parameterType="com.ahoneybee.bolg.entity.ArticleInfo" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into article_info (title, summary) values (#{title}, #{summary})
+    </insert>
 </mapper>

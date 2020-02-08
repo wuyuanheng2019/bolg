@@ -29,12 +29,12 @@ public class ArticleContent implements Serializable {
     /**
      * id
      */
-    private long id;
+    private Long id;
 
     /**
      * 文章主键
      */
-    private Integer articleId;
+    private Long articleId;
 
     /**
      * 文章内容
