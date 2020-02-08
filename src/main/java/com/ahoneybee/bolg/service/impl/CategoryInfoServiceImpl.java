@@ -1,10 +1,13 @@
 package com.ahoneybee.bolg.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.ahoneybee.bolg.entity.ArticleCategory;
 import com.ahoneybee.bolg.entity.CategoryInfo;
 import com.ahoneybee.bolg.mapper.CategoryInfoMapper;
+import com.ahoneybee.bolg.service.IArticleCategoryService;
 import com.ahoneybee.bolg.service.ICategoryInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,6 +24,15 @@ import java.util.List;
  */
 @Service
 public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, CategoryInfo> implements ICategoryInfoService {
+
+    /**
+     * 文章分类service
+     */
+    private final IArticleCategoryService articleCategoryService;
+
+    public CategoryInfoServiceImpl(IArticleCategoryService articleCategoryService) {
+        this.articleCategoryService = articleCategoryService;
+    }
 
     @Override
     public List<String> listCategoryByArticleId(Long articleId) {
@@ -68,6 +80,14 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
                     .set(CategoryInfo::getNumber, info.getNumber() + num)
                     .update();
         });
+    }
+
+    @Override
+    public CategoryInfo getCategoryInfoById(Long id) {
+
+        //查找中间关系
+        ArticleCategory articleCategory = articleCategoryService.getCategoryById(id);
+        return getById(articleCategory.getCategoryId());
     }
 
     /**

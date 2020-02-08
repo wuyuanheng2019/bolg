@@ -1,8 +1,10 @@
 package com.ahoneybee.bolg.controller;
 
 
+import com.ahoneybee.bolg.entity.ArticleContent;
 import com.ahoneybee.bolg.entity.ArticleInfo;
 import com.ahoneybee.bolg.entity.vo.ArticleInfoCategoryVo;
+import com.ahoneybee.bolg.service.IArticleContentService;
 import com.ahoneybee.bolg.service.IArticleInfoService;
 import com.ahoneybee.bolg.util.MyPages;
 import com.github.pagehelper.PageInfo;
@@ -31,12 +33,18 @@ import java.util.Map;
 public class ArticleController {
 
     /**
-     * 文章内容service
+     * 文章信息service
      */
     private final IArticleInfoService articleInfoService;
 
-    public ArticleController(IArticleInfoService articleInfoService) {
+    /**
+     * 文章内容service
+     */
+    private final IArticleContentService articleContentService;
+
+    public ArticleController(IArticleInfoService articleInfoService, IArticleContentService articleContentService) {
         this.articleInfoService = articleInfoService;
+        this.articleContentService = articleContentService;
     }
 
 
@@ -48,25 +56,33 @@ public class ArticleController {
 
 
     @GetMapping("/any/article")
-    @ApiModelProperty(value = "id", example = "1")
+    @ApiModelProperty(value = "id", example = "1", required = true)
     @ApiOperation(value = "查询文章详情页", notes = "查询文章详情页")
-    public List<Object> getArticle(long id) {
+    public List<Object> getArticle(Long id) {
         return articleInfoService.getArticle(id);
     }
 
 
     @GetMapping("/any/byId")
-    @ApiModelProperty(value = "id", example = "1")
+    @ApiModelProperty(value = "id", example = "1", required = true)
     @ApiOperation(value = "查询文章信息(单条)", notes = "查询文章信息(单条)")
-    public ArticleInfo getArticleInfoById(long id) {
+    public ArticleInfo getArticleInfoById(Long id) {
         return articleInfoService.getById(id);
+    }
+
+
+    @GetMapping("/any/contentById")
+    @ApiModelProperty(value = "id", example = "1", required = true)
+    @ApiOperation(value = "查询文章内容", notes = "查询文章内容")
+    public ArticleContent getArticleContentById(Long id) {
+        return articleContentService.getByArticleId(id);
     }
 
 
     @GetMapping("/any/{categoryId}")
     @ApiModelProperty(value = "categoryId", example = "1", required = true)
     @ApiOperation(value = "通过分类id查找文章", notes = "通过分类id查找文章")
-    public PageInfo<ArticleInfoCategoryVo> listArticleInfoByCategory(@PathVariable long categoryId, MyPages pages) {
+    public PageInfo<ArticleInfoCategoryVo> listArticleInfoByCategory(@PathVariable Long categoryId, MyPages pages) {
         return articleInfoService.listArticleInfoByCategory(categoryId, pages);
     }
 

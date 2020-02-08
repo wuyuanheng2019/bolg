@@ -13,4 +13,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IArticleCategoryService extends IService<ArticleCategory> {
 
+    /**
+     * 通过文章id 查找结果集
+     *
+     * @param id 文章id
+     * @return 文章分类关系
+     */
+    ArticleCategory getCategoryById(Long id);
 }

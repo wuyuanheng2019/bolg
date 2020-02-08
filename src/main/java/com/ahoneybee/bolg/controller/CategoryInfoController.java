@@ -6,6 +6,7 @@ import com.ahoneybee.bolg.entity.Node;
 import com.ahoneybee.bolg.service.ICategoryInfoService;
 import com.ahoneybee.bolg.util.TreeUtils;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +37,7 @@ public class CategoryInfoController {
         this.categoryInfoService = categoryInfoService;
     }
 
+
     @GetMapping("/any/list")
     @ApiOperation(value = "分类列表", notes = "分类列表")
     public Node listCategoryInfo() {
@@ -50,4 +52,10 @@ public class CategoryInfoController {
     }
 
 
+    @GetMapping("/any/getCategoryInfoById")
+    @ApiModelProperty(value = "id", example = "1", required = true)
+    @ApiOperation(value = "查询文章当前分类", notes = "查询文章当前分类")
+    public CategoryInfo getCategoryInfoById(Long id) {
+        return categoryInfoService.getCategoryInfoById(id);
+    }
 }

@@ -16,9 +16,8 @@ import java.util.List;
  */
 public interface ICategoryInfoService extends IService<CategoryInfo> {
 
-
     /**
-     * 查询文章分类
+     * 查询文章分类(father - son )
      *
      * @param articleId 文章id
      * @return 结果集
@@ -40,4 +39,12 @@ public interface ICategoryInfoService extends IService<CategoryInfo> {
      * @param num        节点下的文章
      */
     void updateCategoryNumById(Long categoryId, int num);
+
+    /**
+     * 通过文章id查询当前分类
+     *
+     * @param id 文章id
+     * @return 当前分类
+     */
+    CategoryInfo getCategoryInfoById(Long id);
 }

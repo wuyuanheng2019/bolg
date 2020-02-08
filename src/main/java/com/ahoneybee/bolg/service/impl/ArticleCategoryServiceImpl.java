@@ -4,6 +4,7 @@ import com.ahoneybee.bolg.entity.ArticleCategory;
 import com.ahoneybee.bolg.mapper.ArticleCategoryMapper;
 import com.ahoneybee.bolg.service.IArticleCategoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,5 +17,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ArticleCategoryServiceImpl extends ServiceImpl<ArticleCategoryMapper, ArticleCategory> implements IArticleCategoryService {
+
+    @Override
+    public ArticleCategory getCategoryById(Long id) {
+        return lambdaQuery().eq(ObjectUtils.isNotEmpty(id), ArticleCategory::getArticleId, id).one();
+    }
 
 }
