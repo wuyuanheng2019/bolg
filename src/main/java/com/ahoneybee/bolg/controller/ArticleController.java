@@ -10,10 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -64,5 +61,12 @@ public class ArticleController {
         return articleInfoService.getById(id);
     }
 
+
+    @GetMapping("/any/{categoryId}")
+    @ApiModelProperty(value = "categoryId", example = "1", required = true)
+    @ApiOperation(value = "通过分类id查找文章", notes = "通过分类id查找文章")
+    public PageInfo<ArticleInfoCategoryVo> listArticleInfoByCategory(@PathVariable long categoryId, MyPages pages) {
+        return articleInfoService.listArticleInfoByCategory(categoryId, pages);
+    }
 
 }

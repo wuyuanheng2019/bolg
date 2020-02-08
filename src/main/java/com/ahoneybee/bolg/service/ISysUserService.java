@@ -48,4 +48,13 @@ public interface ISysUserService extends IService<SysUser> {
      * @return 总量
      */
     long getUserLogNum();
+
+    /**
+     * 登陆
+     *
+     * @param username 账号名称
+     * @param password 密码
+     * @return 检测结果(false 为和前台交互的规则)
+     */
+    String login(String username, String password);
 }

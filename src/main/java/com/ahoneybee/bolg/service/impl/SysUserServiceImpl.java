@@ -1,5 +1,6 @@
 package com.ahoneybee.bolg.service.impl;
 
+import cn.hutool.crypto.digest.MD5;
 import com.ahoneybee.bolg.entity.SysUser;
 import com.ahoneybee.bolg.mapper.SysUserMapper;
 import com.ahoneybee.bolg.service.ISysUserService;
@@ -69,6 +70,24 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public long getUserLogNum() {
         return baseMapper.selectUserLogNum();
+    }
+
+    @Override
+    public String login(String username, String password) {
+
+        //通过用户名得到密码
+        String dbPwd = baseMapper.getPasswordByUsername(username);
+        if (StringUtils.isNotEmpty(dbPwd)) {
+            if (!password.equals(dbPwd)) {
+                return "false";
+            }
+
+            //md5撒盐加密
+            MD5 md5 = new MD5("WYH--@#¥".getBytes());
+            return username + "" + md5.digestHex(password);
+
+        }
+        return "false";
     }
 
 

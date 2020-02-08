@@ -22,4 +22,12 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
     @Select(value = "select COALESCE(CAST(SUM(`num`) AS SIGNED), 0) AS 'sum' from sys_user")
     long selectUserLogNum();
 
+    /**
+     * 获取密码
+     *
+     * @param username 用户名
+     * @return pwd
+     */
+    @Select("select password from sys_me where name = #{username} or u_id = (select id from sys_user where name = #{username})")
+    String getPasswordByUsername(String username);
 }

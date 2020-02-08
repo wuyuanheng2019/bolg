@@ -1,6 +1,7 @@
 package com.ahoneybee.bolg.util;
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.ahoneybee.bolg.entity.CategoryInfo;
 import com.ahoneybee.bolg.entity.CommentInfo;
 import com.ahoneybee.bolg.entity.Node;
 import lombok.extern.slf4j.Slf4j;
@@ -24,11 +25,12 @@ public class TreeUtils {
     /**
      * 封装node节点
      *
-     * @param commentInfo 评论信息
-     * @param articleId   文章id
+     * @param commentInfos  评论信息
+     * @param categoryInfos 分类信息
+     * @param id            父节点id
      * @return 节点
      */
-    public static Node buildTree(List<CommentInfo> commentInfo, long articleId) {
+    public static Node buildTree(List<CommentInfo> commentInfos, List<CategoryInfo> categoryInfos, long id) {
 
         /*
          * 1 创建父节点 father ，所有节点归属于父节点
@@ -40,7 +42,7 @@ public class TreeUtils {
         List<Node> childrens = Collections.synchronizedList(new ArrayList<>());
         List<Node> operlist = Collections.synchronizedList(new ArrayList<>());
 
-        creadNode(commentInfo, articleId, tree, childrens);
+        creadNode(commentInfos, categoryInfos, id, tree, childrens);
 
         childrens.forEach(node -> {
             Node no = findFatherNode(childrens, node.getParentId());
@@ -50,6 +52,7 @@ public class TreeUtils {
         childrens.removeAll(operlist);
         return tree;
     }
+
 
     /**
      * 判断是否存在父节点，并作出相应的处理
@@ -100,22 +103,32 @@ public class TreeUtils {
 
 
     /**
-     * @param commentInfos 评论信息
-     * @param articleId    文章id
-     * @param tree         父节点
-     * @param children     子节点
+     * @param commentInfos  评论信息
+     * @param categoryInfos 分类信息
+     * @param id            id
+     * @param tree          父节点
+     * @param children      子节点
      */
-    private static void creadNode(List<CommentInfo> commentInfos, long articleId, Node tree, List<Node> children) {
+    private static void creadNode(List<CommentInfo> commentInfos, List<CategoryInfo> categoryInfos,
+                                  long id, Node tree, List<Node> children) {
 
         //创建子节点
-        commentInfos.forEach(commentInfo -> {
-            children.add(
-                    new Node(commentInfo, commentInfo.getId(),
-                            commentInfo.getParentId(), null));
-        });
-        tree.setId(articleId);
+        if (CollectionUtil.isNotEmpty(commentInfos)) {
+            commentInfos.forEach(commentInfo -> {
+                children.add(
+                        new Node(commentInfo, commentInfo.getId(),
+                                commentInfo.getParentId(), null));
+            });
+        } else {
+            categoryInfos.forEach(categoryInfo -> {
+                children.add(
+                        new Node(categoryInfo, categoryInfo.getId(),
+                                categoryInfo.getParentId(), null));
+            });
+        }
+
+        tree.setId(id);
         tree.setChildren(children);
     }
-
 
 }

@@ -1,6 +1,7 @@
 package com.ahoneybee.bolg.service;
 
 import com.ahoneybee.bolg.entity.CategoryInfo;
+import com.ahoneybee.bolg.util.MyPages;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -22,5 +23,14 @@ public interface ICategoryInfoService extends IService<CategoryInfo> {
      * @param articleId 文章id
      * @return 结果集
      */
-    List<String> listCategoryByArticleId(long articleId);
+    List<String> listCategoryByArticleId(Long articleId);
+
+    /**
+     * 查询id下的子类
+     *
+     * @param categoryId 当前分类id
+     * @return 分类ids
+     */
+    List<Long> findSon(Long categoryId);
+
 }

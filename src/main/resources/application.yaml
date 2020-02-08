@@ -31,6 +31,7 @@ spring:
         # 连接池中最小空闲链接
         min-idle: 0
     password: wyh8231808@#@#
+
 # mybatis-plush配置
 mybatis-plus:
   # mapper 扫描
@@ -40,6 +41,7 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false
+
 # pagehelper
 pagehelper:
   offset-as-page-num: true
@@ -53,3 +55,7 @@ pagehelper:
 logging:
   level:
     com.ahoneybee.bolg.mapper: debug;
+
+# 服务
+server:
+  port: 8001

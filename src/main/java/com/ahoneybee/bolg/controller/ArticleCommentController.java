@@ -3,6 +3,7 @@ package com.ahoneybee.bolg.controller;
 import com.ahoneybee.bolg.entity.CommentInfo;
 import com.ahoneybee.bolg.service.IArticleCommentService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 @CrossOrigin
 @RestController
-@RequestMapping("/article-comment")
+@RequestMapping("/articleComment")
 @Api(value = "ArticleCommentController", tags = {"文章评论接口文档"})
 public class ArticleCommentController {
 
@@ -33,6 +34,7 @@ public class ArticleCommentController {
     }
 
     @PostMapping("/user/postComment/{id}")
+    @ApiOperation(value = "文章评论", notes = "文章评论")
     public boolean postArticleComment(@PathVariable long id,
                                       @RequestBody CommentInfo commentInfo, HttpServletRequest request) {
         return articleCommentService.postArticleComment(id, commentInfo, request);

@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 @CrossOrigin
 @RestController
-@RequestMapping("/article-love")
+@RequestMapping("/articleLove")
 @Api(value = "ArticleLoverController", tags = {"文章点赞接口文档"})
 public class ArticleLoverController {
 
