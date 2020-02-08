@@ -5,8 +5,10 @@ import com.ahoneybee.bolg.entity.ArticleCategory;
 import com.ahoneybee.bolg.entity.CategoryInfo;
 import com.ahoneybee.bolg.mapper.CategoryInfoMapper;
 import com.ahoneybee.bolg.service.IArticleCategoryService;
+import com.ahoneybee.bolg.service.IArticleInfoService;
 import com.ahoneybee.bolg.service.ICategoryInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,8 +31,14 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
      */
     private final IArticleCategoryService articleCategoryService;
 
-    public CategoryInfoServiceImpl(IArticleCategoryService articleCategoryService) {
+    /**
+     * 文章信息service
+     */
+    private final IArticleInfoService articleInfoService;
+
+    public CategoryInfoServiceImpl(IArticleCategoryService articleCategoryService, IArticleInfoService articleInfoService) {
         this.articleCategoryService = articleCategoryService;
+        this.articleInfoService = articleInfoService;
     }
 
     @Override
@@ -116,12 +124,41 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
     }
 
     @Override
-    public boolean deleteById(long id) {
+    public boolean deleteById(Long id) {
 
         /*
-         * 1 找到
+         * 1 找到当前节点的子节点集合
+         * 2 找到当前分类下的文章，并统计数量
+         * 3 删除子节点集合 以及 之下的文章等相关内容
          */
+        List<CategoryInfo> categoryInfoList = new ArrayList<>();
+        List<CategoryInfo> infos = findInfoDown(id, categoryInfoList);
 
+        //删除文章
+        if (CollectionUtil.isNotEmpty(infos)) {
+            infos.forEach(
+                    categoryInfo -> {
+
+                        //查找文章分类关联
+                        List<ArticleCategory> categories = articleCategoryService.lambdaQuery()
+                                .eq(ArticleCategory::getCategoryId, categoryInfo.getId())
+                                .list();
+
+                        //delete
+                        if (CollectionUtil.isNotEmpty(categories)) {
+                            categories.forEach(
+                                    articleCategory -> {
+                                        articleInfoService.deleteArticle(articleCategory.getArticleId());
+                                    }
+                            );
+                        }
+
+                    }
+            );
+        }
+
+        //删除分类
+        lambdaUpdate().eq(CategoryInfo::getId, infos).remove();
         return true;
     }
 

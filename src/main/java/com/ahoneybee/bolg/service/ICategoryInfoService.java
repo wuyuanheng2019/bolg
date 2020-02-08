@@ -1,7 +1,6 @@
 package com.ahoneybee.bolg.service;
 
 import com.ahoneybee.bolg.entity.CategoryInfo;
-import com.ahoneybee.bolg.util.MyPages;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -62,5 +61,5 @@ public interface ICategoryInfoService extends IService<CategoryInfo> {
      * @param id 分类id
      * @return 是否成功
      */
-    boolean deleteById(long id);
+    boolean deleteById(Long id);
 }

@@ -52,7 +52,7 @@ public class CategoryInfoController {
 
     @GetMapping("/any/getCategoryInfoById")
     @ApiModelProperty(value = "id", example = "1", required = true)
-    @ApiOperation(value = "查询文章当前分类", notes = "查询文章当前分类")
+    @ApiOperation(value = "查询文章分类", notes = "查询文章分类")
     public CategoryInfo getCategoryInfoById(Long id) {
         return categoryInfoService.getCategoryInfoById(id);
     }
@@ -60,9 +60,15 @@ public class CategoryInfoController {
 
     @DeleteMapping("/admin/{id}")
     @ApiModelProperty(value = "id", example = "1", required = true)
-    @ApiOperation(value = "查询文章当前分类", notes = "查询文章当前分类")
-    public boolean deleteCategoryInfoById(@PathVariable long id) {
+    @ApiOperation(value = "删除分类", notes = "删除分类")
+    public boolean deleteCategoryInfoById(@PathVariable Long id) {
         return categoryInfoService.deleteById(id);
     }
 
+
+    @PostMapping("/admin/post")
+    @ApiOperation(value = "新增分类", notes = "新增分类")
+    public boolean postCategoryInfo(@RequestBody CategoryInfo categoryInfo) {
+        return categoryInfoService.save(categoryInfo);
+    }
 }
