@@ -1,5 +1,7 @@
 package com.ahoneybee.bolg.entity.vo;
 
+import com.ahoneybee.bolg.entity.ArticleCategory;
+import com.ahoneybee.bolg.entity.ArticleContent;
 import com.ahoneybee.bolg.entity.ArticleInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,8 +29,19 @@ public class ArticleInfoCategoryVo implements Serializable {
     private ArticleInfo articleInfo;
 
     /**
-     * 分类
+     * 分类(集合)
      */
     private List<String> articleCategoryNames;
+
+    /**
+     * 文章内容
+     */
+    private ArticleContent articleContent;
+
+
+    /**
+     * 文章分类关系
+     */
+    private ArticleCategory articleCategory;
 
 }

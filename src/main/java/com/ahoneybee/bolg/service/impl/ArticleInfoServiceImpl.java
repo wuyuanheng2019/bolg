@@ -13,6 +13,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -42,7 +43,8 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
     private final IArticleCategoryService articleCategoryService;
 
     public ArticleInfoServiceImpl(ICategoryInfoService categoryInfoService, IArticleContentService articleContentService,
-                                  ICommentInfoService commentInfoService, IArticleLoverService articleLoverService, IArticleCategoryService articleCategoryService) {
+                                  ICommentInfoService commentInfoService, IArticleLoverService articleLoverService,
+                                  IArticleCategoryService articleCategoryService) {
 
         this.categoryInfoService = categoryInfoService;
         this.articleContentService = articleContentService;
@@ -139,8 +141,32 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
          * 2 保存，并创建文章及其分类关联信息
          * 3 返回信息
          */
-        ObjectMapper objectMapper = new ObjectMapper();
+        ArticleInfoCategoryVo articleVo = getArticleVo(map);
+
+        //校验结果集不为 null
+        if (ObjectUtils.isEmpty(articleVo)
+                || ObjectUtils.isEmpty(articleVo.getArticleInfo())
+                || ObjectUtils.isEmpty(articleVo.getArticleCategory())
+                || ObjectUtils.isEmpty(articleVo.getArticleContent())) {
+            return false;
+        }
+
+        //db操作
+        insertArticleAndInfo(articleVo.getArticleInfo(),
+                articleVo.getArticleContent(), articleVo.getArticleCategory());
+        return true;
+    }
+
+    /**
+     * 读取前台传入map
+     *
+     * @param map 封装map
+     * @return vo
+     */
+    private ArticleInfoCategoryVo getArticleVo(Map<String, Object> map) {
+
         try {
+            ObjectMapper objectMapper = new ObjectMapper();
             ArticleInfo articleInfo = objectMapper.readValue(
                     objectMapper.writeValueAsString(map.get("articleInfo")), ArticleInfo.class);
 
@@ -150,15 +176,13 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
             ArticleCategory articleCategory = objectMapper.readValue(
                     objectMapper.writeValueAsString(map.get("articleCategory")), ArticleCategory.class);
 
-            //db操作
-            insertArticleAndInfo(articleInfo, articleContent, articleCategory);
+            return new ArticleInfoCategoryVo(articleInfo, null, articleContent, articleCategory);
 
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            return false;
         }
 
-        return true;
+        return null;
     }
 
     /**
@@ -189,7 +213,7 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
      * 添加分类信息
      *
      * @param infos 文章信息
-     * @return 分类信息 <father - son>
+     * @return 封装vo信息 <father - son>
      */
     private PageInfo<ArticleInfoCategoryVo> getArticleInfoCategoryVo(List<ArticleInfo> infos) {
 
@@ -200,7 +224,8 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
         infos.parallelStream()
                 .forEach(articleInfo ->
                         voList.add(new ArticleInfoCategoryVo(articleInfo,
-                                categoryInfoService.listCategoryByArticleId(articleInfo.getId())))
+                                categoryInfoService.listCategoryByArticleId(articleInfo.getId())
+                                , null, null))
                 );
 
         //封装结果集
