@@ -55,4 +55,12 @@ public interface ICategoryInfoService extends IService<CategoryInfo> {
      * @param number     数值
      */
     void updateNumber(Long categoryId, int number);
+
+    /**
+     * 删除当前分类
+     *
+     * @param id 分类id
+     * @return 是否成功
+     */
+    boolean deleteById(long id);
 }

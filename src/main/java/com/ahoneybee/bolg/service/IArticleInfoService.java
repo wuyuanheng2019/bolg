@@ -88,4 +88,11 @@ public interface IArticleInfoService extends IService<ArticleInfo> {
      * @return 是否成功
      */
     boolean updateArticle(Map<String, Object> map);
+
+    /**
+     * 删除文章以及相关信息
+     *
+     * @param articleId 文章id
+     */
+    boolean deleteArticle(long articleId);
 }

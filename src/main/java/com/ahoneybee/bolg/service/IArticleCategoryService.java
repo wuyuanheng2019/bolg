@@ -16,10 +16,10 @@ public interface IArticleCategoryService extends IService<ArticleCategory> {
     /**
      * 通过文章id 查找结果集
      *
-     * @param id 文章id
+     * @param articleId 文章id
      * @return 文章分类关系
      */
-    ArticleCategory getCategoryByArticleId(Long id);
+    ArticleCategory getCategoryByArticleId(Long articleId);
 
     /**
      * 更新当前文章分类

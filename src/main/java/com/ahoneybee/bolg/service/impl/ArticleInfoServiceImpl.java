@@ -1,6 +1,8 @@
 package com.ahoneybee.bolg.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.ahoneybee.bolg.entity.ArticleCategory;
+import com.ahoneybee.bolg.entity.ArticleComment;
 import com.ahoneybee.bolg.entity.ArticleContent;
 import com.ahoneybee.bolg.entity.ArticleInfo;
 import com.ahoneybee.bolg.entity.vo.ArticleInfoCategoryVo;
@@ -42,15 +44,19 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
 
     private final IArticleCategoryService articleCategoryService;
 
+    private final IArticleCommentService articleCommentService;
+
+
     public ArticleInfoServiceImpl(ICategoryInfoService categoryInfoService, IArticleContentService articleContentService,
                                   ICommentInfoService commentInfoService, IArticleLoverService articleLoverService,
-                                  IArticleCategoryService articleCategoryService) {
+                                  IArticleCategoryService articleCategoryService, IArticleCommentService articleCommentService) {
 
         this.categoryInfoService = categoryInfoService;
         this.articleContentService = articleContentService;
         this.commentInfoService = commentInfoService;
         this.articleLoverService = articleLoverService;
         this.articleCategoryService = articleCategoryService;
+        this.articleCommentService = articleCommentService;
     }
 
     @Override
@@ -169,6 +175,38 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
         //db操作(更新)
         UpdateArticleAndInfo(articleVo.getArticleInfo(),
                 articleVo.getArticleContent(), articleVo.getArticleCategory());
+        return true;
+    }
+
+    @Override
+    public boolean deleteArticle(long articleId) {
+
+        /*
+         * 删除文章信息
+         *      文章内容
+         *      文章评论
+         *      文章分类
+         */
+        removeById(articleId);
+        articleContentService
+                .lambdaUpdate().eq(ArticleContent::getArticleId, articleId)
+                .remove();
+
+        //删除相关评论
+        List<ArticleComment> articleComments = articleCommentService
+                .lambdaQuery().eq(ArticleComment::getArticleId, articleId).list();
+        if (CollectionUtil.isNotEmpty(articleComments)) {
+            articleComments.forEach(articleComment -> {
+                commentInfoService.removeById(articleComment.getCommentId());
+            });
+
+            articleCommentService.removeByIds(articleComments);
+        }
+
+        //分类操作
+        ArticleCategory category = articleCategoryService.getCategoryByArticleId(articleId);
+        categoryInfoService.updateCategoryNumById(category.getCategoryId(), -1);
+
         return true;
     }
 

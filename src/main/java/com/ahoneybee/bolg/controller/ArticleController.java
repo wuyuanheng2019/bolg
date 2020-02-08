@@ -14,7 +14,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -103,4 +102,11 @@ public class ArticleController {
         return articleInfoService.updateArticle(map);
     }
 
+
+    @DeleteMapping("/admin/delete")
+    @ApiModelProperty(value = "id", example = "1", required = true)
+    @ApiOperation(value = "删除文章信息", notes = "删除文章信息")
+    public boolean deleteArticle(long id) {
+        return articleInfoService.deleteArticle(id);
+    }
 }

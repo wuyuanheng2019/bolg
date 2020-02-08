@@ -115,6 +115,16 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
         );
     }
 
+    @Override
+    public boolean deleteById(long id) {
+
+        /*
+         * 1 找到
+         */
+
+        return true;
+    }
+
 
     /**
      * 递归调用 所有子集合的id(向下调用)

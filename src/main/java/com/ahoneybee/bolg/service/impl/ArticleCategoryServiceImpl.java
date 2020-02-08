@@ -29,8 +29,8 @@ public class ArticleCategoryServiceImpl extends ServiceImpl<ArticleCategoryMappe
     }
 
     @Override
-    public ArticleCategory getCategoryByArticleId(Long id) {
-        return lambdaQuery().eq(ObjectUtils.isNotEmpty(id), ArticleCategory::getArticleId, id).one();
+    public ArticleCategory getCategoryByArticleId(Long articleId) {
+        return lambdaQuery().eq(ObjectUtils.isNotEmpty(articleId), ArticleCategory::getArticleId, articleId).one();
     }
 
     @Override

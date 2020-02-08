@@ -29,7 +29,7 @@ public class CommentInfo implements Serializable {
     /**
      * id
      */
-    private long id;
+    private Long id;
 
     /**
      * 评论信息

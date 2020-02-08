@@ -8,9 +8,7 @@ import com.ahoneybee.bolg.util.TreeUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -46,7 +44,7 @@ public class CategoryInfoController {
 
 
     @GetMapping("/any/listPa")
-    @ApiOperation(value = "分类列表(文章添加)", notes = "分类列表(文章添加)")
+    @ApiOperation(value = "分类列表(添加文章页面)", notes = "分类列表(添加文章页面)")
     public List<CategoryInfo> listSubCategoryInfo() {
         return categoryInfoService.list();
     }
@@ -58,4 +56,13 @@ public class CategoryInfoController {
     public CategoryInfo getCategoryInfoById(Long id) {
         return categoryInfoService.getCategoryInfoById(id);
     }
+
+
+    @DeleteMapping("/admin/{id}")
+    @ApiModelProperty(value = "id", example = "1", required = true)
+    @ApiOperation(value = "查询文章当前分类", notes = "查询文章当前分类")
+    public boolean deleteCategoryInfoById(@PathVariable long id) {
+        return categoryInfoService.deleteById(id);
+    }
+
 }

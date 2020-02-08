@@ -76,8 +76,8 @@ public class ArticleCommentServiceImpl extends ServiceImpl<ArticleCommentMapper,
             );
         }
 
-        commentInfoService.save(commentInfo.setUserId(sysUser.getId()));
         save(new ArticleComment().setArticleId(id).setCommentId(commentInfo.getId()));
+        commentInfoService.save(commentInfo.setUserId(sysUser.getId()));
 
         return true;
     }
