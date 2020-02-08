@@ -47,4 +47,12 @@ public interface ICategoryInfoService extends IService<CategoryInfo> {
      * @return 当前分类
      */
     CategoryInfo getCategoryInfoById(Long id);
+
+    /**
+     * 自增 或 自减
+     *
+     * @param categoryId 分类id
+     * @param number     数值
+     */
+    void updateNumber(Long categoryId, int number);
 }

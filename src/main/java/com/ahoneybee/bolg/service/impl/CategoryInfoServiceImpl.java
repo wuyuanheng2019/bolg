@@ -7,7 +7,6 @@ import com.ahoneybee.bolg.mapper.CategoryInfoMapper;
 import com.ahoneybee.bolg.service.IArticleCategoryService;
 import com.ahoneybee.bolg.service.ICategoryInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -62,9 +61,18 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
          * 2 有：继续做便利添加操作，反之则遍历查找
          * 3 返回结果集
          */
-        List<Long> list = Collections.synchronizedList(new ArrayList<>());
-        list.add(categoryId);
-        return findInfoDown(categoryId, list);
+        List<CategoryInfo> categoryInfoList = new ArrayList<>();
+        List<Long> listLong = Collections.synchronizedList(new ArrayList<>());
+        listLong.add(categoryId);
+        List<CategoryInfo> infoDown = findInfoDown(categoryId, categoryInfoList);
+
+        //判断是否为 null
+        if (CollectionUtil.isNotEmpty(infoDown)) {
+            infoDown.parallelStream().forEach(info -> {
+                listLong.add(info.getId());
+            });
+        }
+        return listLong;
     }
 
     @Override
@@ -86,9 +94,27 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
     public CategoryInfo getCategoryInfoById(Long id) {
 
         //查找中间关系
-        ArticleCategory articleCategory = articleCategoryService.getCategoryById(id);
+        ArticleCategory articleCategory = articleCategoryService.getCategoryByArticleId(id);
         return getById(articleCategory.getCategoryId());
     }
+
+
+    @Override
+    public void updateNumber(Long categoryId, int number) {
+
+        //得到当前分类
+        List<CategoryInfo> categoryInfoList = new ArrayList<>();
+        CategoryInfo categoryInfo = getById(categoryId);
+
+        //分类下的数量操作
+        findInfoUp(categoryInfo, categoryInfoList).forEach(
+                info -> {
+                    info.setNumber(info.getNumber() + number);
+                    updateById(info);
+                }
+        );
+    }
+
 
     /**
      * 递归调用 所有子集合的id(向下调用)
@@ -97,7 +123,7 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
      * @param list       容器(存放找到的 categoryId )
      * @return 分类ids
      */
-    private List<Long> findInfoDown(Long categoryId, List<Long> list) {
+    private List<CategoryInfo> findInfoDown(Long categoryId, List<CategoryInfo> list) {
 
         //找到子节点
         List<CategoryInfo> categoryInfoList = lambdaQuery().in(CategoryInfo::getParentId, categoryId).list();
@@ -105,9 +131,9 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
         if (CollectionUtil.isNotEmpty(categoryInfoList)) {
 
             //一对多的映射关系，多线程调用
-            categoryInfoList.parallelStream().forEach(
+            categoryInfoList.forEach(
                     categoryInfo -> {
-                        list.add(categoryInfo.getId());
+                        list.add(categoryInfo);
                         findInfoDown(categoryInfo.getId(), list);
                     }
             );
@@ -126,7 +152,7 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
 
         if (categoryInfo != null) {
 
-            //找到父节点并田间操作
+            //找到父节点并进行操作
             list.add(lambdaQuery()
                     .select(CategoryInfo::getId)
                     .select(CategoryInfo::getName)

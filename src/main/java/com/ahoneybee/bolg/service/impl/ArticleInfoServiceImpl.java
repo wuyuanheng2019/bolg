@@ -142,47 +142,44 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
          * 3 返回信息
          */
         ArticleInfoCategoryVo articleVo = getArticleVo(map);
-
-        //校验结果集不为 null
-        if (ObjectUtils.isEmpty(articleVo)
-                || ObjectUtils.isEmpty(articleVo.getArticleInfo())
-                || ObjectUtils.isEmpty(articleVo.getArticleCategory())
-                || ObjectUtils.isEmpty(articleVo.getArticleContent())) {
+        if (ObjectUtils.isEmpty(articleVo)) {
             return false;
         }
 
-        //db操作
+        //db操作(添加)
         insertArticleAndInfo(articleVo.getArticleInfo(),
                 articleVo.getArticleContent(), articleVo.getArticleCategory());
         return true;
     }
 
-    /**
-     * 读取前台传入map
-     *
-     * @param map 封装map
-     * @return vo
-     */
-    private ArticleInfoCategoryVo getArticleVo(Map<String, Object> map) {
+    @Override
+    public boolean updateArticle(Map<String, Object> map) {
 
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            ArticleInfo articleInfo = objectMapper.readValue(
-                    objectMapper.writeValueAsString(map.get("articleInfo")), ArticleInfo.class);
-
-            ArticleContent articleContent = objectMapper.readValue(
-                    objectMapper.writeValueAsString(map.get("articleContent")), ArticleContent.class);
-
-            ArticleCategory articleCategory = objectMapper.readValue(
-                    objectMapper.writeValueAsString(map.get("articleCategory")), ArticleCategory.class);
-
-            return new ArticleInfoCategoryVo(articleInfo, null, articleContent, articleCategory);
-
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
+        /*
+         * 1 读取前台信息
+         * 2 更新 (校验分类是否改变)
+         *        如果改变，以前类型及其父类的文章数量 -1 ，反之不变
+         * 3 返回
+         */
+        ArticleInfoCategoryVo articleVo = getArticleVo(map);
+        if (ObjectUtils.isEmpty(articleVo)) {
+            return false;
         }
 
-        return null;
+        //db操作(更新)
+        UpdateArticleAndInfo(articleVo.getArticleInfo(),
+                articleVo.getArticleContent(), articleVo.getArticleCategory());
+        return true;
+    }
+
+    private void UpdateArticleAndInfo(ArticleInfo articleInfo, ArticleContent articleContent,
+                                      ArticleCategory articleCategory) {
+        //更新文章以及文章内容
+        updateById(articleInfo);
+        articleContentService.updateById(articleContent);
+
+        //更新文章分类信息
+        articleCategoryService.updateByArticleId(articleCategory);
     }
 
     /**
@@ -208,6 +205,41 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
         categoryInfoService.updateCategoryNumById(articleCategory.getCategoryId(), 1);
 
     }
+
+
+    /**
+     * 读取前台传入map
+     *
+     * @param map 封装map
+     * @return vo
+     */
+    private ArticleInfoCategoryVo getArticleVo(Map<String, Object> map) {
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            ArticleInfo articleInfo = objectMapper.readValue(
+                    objectMapper.writeValueAsString(map.get("articleInfo")), ArticleInfo.class);
+
+            ArticleContent articleContent = objectMapper.readValue(
+                    objectMapper.writeValueAsString(map.get("articleContent")), ArticleContent.class);
+
+            ArticleCategory articleCategory = objectMapper.readValue(
+                    objectMapper.writeValueAsString(map.get("articleCategory")), ArticleCategory.class);
+
+            //校验对象是否为 null
+            if (ObjectUtils.isEmpty(articleInfo)
+                    || ObjectUtils.isEmpty(articleContent)
+                    || ObjectUtils.isEmpty(articleCategory)) {
+                throw new RuntimeException("前台信息传送缺失!!!");
+            }
+            return new ArticleInfoCategoryVo(articleInfo, null, articleContent, articleCategory);
+
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
 
     /**
      * 添加分类信息

@@ -19,5 +19,12 @@ public interface IArticleCategoryService extends IService<ArticleCategory> {
      * @param id 文章id
      * @return 文章分类关系
      */
-    ArticleCategory getCategoryById(Long id);
+    ArticleCategory getCategoryByArticleId(Long id);
+
+    /**
+     * 更新当前文章分类
+     *
+     * @param articleCategory 当前分类信息
+     */
+    void updateByArticleId(ArticleCategory articleCategory);
 }

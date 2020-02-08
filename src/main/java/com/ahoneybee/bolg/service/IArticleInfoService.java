@@ -80,4 +80,12 @@ public interface IArticleInfoService extends IService<ArticleInfo> {
      * @return 成功为true，失败为false(是否成功保存)
      */
     boolean postArticle(Map<String, Object> map);
+
+    /**
+     * 更新文章(及其信息等)
+     *
+     * @param map 同上(postArticle)
+     * @return 是否成功
+     */
+    boolean updateArticle(Map<String, Object> map);
 }

@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -89,8 +90,17 @@ public class ArticleController {
 
     @PostMapping("/admin/postArticle")
     @ApiModelProperty(value = "map", required = true)
-    @ApiOperation(value = "保存", notes = "保存")
+    @ApiOperation(value = "保存文章信息", notes = "保存文章信息")
     public boolean postArticle(@RequestBody Map<String, Object> map) {
         return articleInfoService.postArticle(map);
     }
+
+
+    @PutMapping("/admin/updateArticle")
+    @ApiModelProperty(value = "map", required = true)
+    @ApiOperation(value = "更新文章信息", notes = "更新文章信息")
+    public boolean updateArticleInfo(@RequestBody Map<String, Object> map) {
+        return articleInfoService.updateArticle(map);
+    }
+
 }
