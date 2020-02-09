@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,30 +35,24 @@ import java.util.Map;
 @Service
 public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, ArticleInfo> implements IArticleInfoService {
 
-    private final ICommentInfoService commentInfoService;
+    @Autowired
+    private ICommentInfoService commentInfoService;
 
-    private final IArticleContentService articleContentService;
+    @Autowired
+    private IArticleContentService articleContentService;
 
-    private final ICategoryInfoService categoryInfoService;
+    @Autowired
+    private ICategoryInfoService categoryInfoService;
 
-    private final IArticleLoverService articleLoverService;
+    @Autowired
+    private IArticleLoverService articleLoverService;
 
-    private final IArticleCategoryService articleCategoryService;
+    @Autowired
+    private IArticleCategoryService articleCategoryService;
 
-    private final IArticleCommentService articleCommentService;
+    @Autowired
+    private IArticleCommentService articleCommentService;
 
-
-    public ArticleInfoServiceImpl(ICategoryInfoService categoryInfoService, IArticleContentService articleContentService,
-                                  ICommentInfoService commentInfoService, IArticleLoverService articleLoverService,
-                                  IArticleCategoryService articleCategoryService, IArticleCommentService articleCommentService) {
-
-        this.categoryInfoService = categoryInfoService;
-        this.articleContentService = articleContentService;
-        this.commentInfoService = commentInfoService;
-        this.articleLoverService = articleLoverService;
-        this.articleCategoryService = articleCategoryService;
-        this.articleCommentService = articleCommentService;
-    }
 
     @Override
     public List<ArticleInfo> listArticleInfoByTime(MyPages myPages) {
@@ -217,7 +212,7 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
         articleContentService.updateById(articleContent);
 
         //更新文章分类信息
-        articleCategoryService.updateByArticleId(articleCategory);
+        categoryInfoService.updateByArticleId(articleCategory);
     }
 
     /**

@@ -29,17 +29,15 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
     /**
      * 文章分类service
      */
-    private final IArticleCategoryService articleCategoryService;
+    @Autowired
+    private IArticleCategoryService articleCategoryService;
 
     /**
      * 文章信息service
      */
-    private final IArticleInfoService articleInfoService;
+    @Autowired
+    private IArticleInfoService articleInfoService;
 
-    public CategoryInfoServiceImpl(IArticleCategoryService articleCategoryService, IArticleInfoService articleInfoService) {
-        this.articleCategoryService = articleCategoryService;
-        this.articleInfoService = articleInfoService;
-    }
 
     @Override
     public List<String> listCategoryByArticleId(Long articleId) {
@@ -160,6 +158,22 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
         //删除分类
         lambdaUpdate().eq(CategoryInfo::getId, infos).remove();
         return true;
+    }
+
+    @Override
+    public void updateByArticleId(ArticleCategory articleCategory) {
+
+        /*
+         *  1 查看当前分类是否改变
+         *  2 如改变，则进行修改，反之则不动
+         */
+        ArticleCategory one = articleCategoryService.getCategoryByArticleId(articleCategory.getArticleId());
+        if (!articleCategory.getCategoryId().equals(one.getCategoryId())) {
+
+            //当前分类 +1，之前分类 -1
+            updateNumber(articleCategory.getCategoryId(), 1);
+            updateNumber(one.getCategoryId(), -1);
+        }
     }
 
 

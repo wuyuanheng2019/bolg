@@ -19,34 +19,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ArticleCategoryServiceImpl extends ServiceImpl<ArticleCategoryMapper, ArticleCategory> implements IArticleCategoryService {
 
-    /**
-     * 分类service
-     */
-    private final ICategoryInfoService categoryInfoService;
-
-    public ArticleCategoryServiceImpl(ICategoryInfoService categoryInfoService) {
-        this.categoryInfoService = categoryInfoService;
-    }
-
     @Override
     public ArticleCategory getCategoryByArticleId(Long articleId) {
         return lambdaQuery().eq(ObjectUtils.isNotEmpty(articleId), ArticleCategory::getArticleId, articleId).one();
     }
-
-    @Override
-    public void updateByArticleId(ArticleCategory articleCategory) {
-
-        /*
-         *  1 查看当前分类是否改变
-         *  2 如改变，则进行修改，反之则不动
-         */
-        ArticleCategory one = getCategoryByArticleId(articleCategory.getArticleId());
-        if (!articleCategory.getCategoryId().equals(one.getCategoryId())) {
-
-            //当前分类 +1，之前分类 -1
-            categoryInfoService.updateNumber(articleCategory.getCategoryId(), 1);
-            categoryInfoService.updateNumber(one.getCategoryId(), -1);
-        }
-    }
-
 }

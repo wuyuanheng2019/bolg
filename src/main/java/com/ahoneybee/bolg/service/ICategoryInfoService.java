@@ -1,5 +1,6 @@
 package com.ahoneybee.bolg.service;
 
+import com.ahoneybee.bolg.entity.ArticleCategory;
 import com.ahoneybee.bolg.entity.CategoryInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -62,4 +63,11 @@ public interface ICategoryInfoService extends IService<CategoryInfo> {
      * @return 是否成功
      */
     boolean deleteById(Long id);
+
+    /**
+     * 更新当前文章分类
+     *
+     * @param articleCategory 当前分类信息
+     */
+    void updateByArticleId(ArticleCategory articleCategory);
 }

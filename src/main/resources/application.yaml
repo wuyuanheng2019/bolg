@@ -58,4 +58,4 @@ logging:
 
 # 服务
 server:
-  port: 8001
+  port: 60081

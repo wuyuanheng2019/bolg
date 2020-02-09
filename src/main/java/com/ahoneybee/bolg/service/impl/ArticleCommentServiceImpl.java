@@ -12,6 +12,7 @@ import com.ahoneybee.bolg.util.OperateByUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,17 +28,13 @@ import javax.servlet.http.HttpServletRequest;
 @Service
 public class ArticleCommentServiceImpl extends ServiceImpl<ArticleCommentMapper, ArticleComment> implements IArticleCommentService {
 
-    /**
-     * 人员service
-     */
-    private final ISysUserService sysUserService;
 
-    private final ICommentInfoService commentInfoService;
+    @Autowired
+    private ISysUserService sysUserService;
 
-    public ArticleCommentServiceImpl(ISysUserService sysUserService, ICommentInfoService commentInfoService) {
-        this.sysUserService = sysUserService;
-        this.commentInfoService = commentInfoService;
-    }
+    @Autowired
+    private ICommentInfoService commentInfoService;
+
 
     @Override
     public boolean postArticleComment(long id, CommentInfo commentInfo, HttpServletRequest request) {
