@@ -132,7 +132,7 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
         List<CategoryInfo> categoryInfoList = new ArrayList<>();
         List<CategoryInfo> infos = findInfoDown(id, categoryInfoList);
 
-        //删除文章
+        //删除文章，分类
         if (CollectionUtil.isNotEmpty(infos)) {
             infos.forEach(
                     categoryInfo -> {
@@ -141,7 +141,6 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
                         List<ArticleCategory> categories = articleCategoryService.lambdaQuery()
                                 .eq(ArticleCategory::getCategoryId, categoryInfo.getId())
                                 .list();
-
                         //delete
                         if (CollectionUtil.isNotEmpty(categories)) {
                             categories.forEach(
@@ -150,13 +149,18 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
                                     }
                             );
                         }
+                    }
+            );
 
+            //分类
+            infos.forEach(
+                    categoryInfo -> {
+                        lambdaUpdate().eq(CategoryInfo::getId, categoryInfo.getId()).remove();
                     }
             );
         }
 
-        //删除分类
-        lambdaUpdate().eq(CategoryInfo::getId, infos).remove();
+        removeById(id);
         return true;
     }
 
@@ -215,12 +219,9 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
 
             //找到父节点并进行操作
             list.add(lambdaQuery()
-                    .select(CategoryInfo::getId)
-                    .select(CategoryInfo::getName)
-                    .select(CategoryInfo::getNumber)
+                    .select(CategoryInfo::getNumber, CategoryInfo::getName, CategoryInfo::getId)
                     .eq(CategoryInfo::getId, categoryInfo.getId())
-                    .one()
-            );
+                    .one());
 
             categoryInfo = getById(categoryInfo.getParentId());
             findInfoUp(categoryInfo, list);

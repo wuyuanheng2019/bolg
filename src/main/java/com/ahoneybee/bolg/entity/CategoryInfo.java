@@ -66,10 +66,4 @@ public class CategoryInfo implements Serializable {
      */
     private LocalDateTime updateTime;
 
-    /**
-     * 修改人
-     */
-    private String updatePersion;
-
-
 }

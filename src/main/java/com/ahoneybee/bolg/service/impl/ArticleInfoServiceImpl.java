@@ -1,10 +1,7 @@
 package com.ahoneybee.bolg.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
-import com.ahoneybee.bolg.entity.ArticleCategory;
-import com.ahoneybee.bolg.entity.ArticleComment;
-import com.ahoneybee.bolg.entity.ArticleContent;
-import com.ahoneybee.bolg.entity.ArticleInfo;
+import com.ahoneybee.bolg.entity.*;
 import com.ahoneybee.bolg.entity.vo.ArticleInfoCategoryVo;
 import com.ahoneybee.bolg.mapper.ArticleInfoMapper;
 import com.ahoneybee.bolg.service.*;
@@ -181,6 +178,7 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
          *      文章内容
          *      文章评论
          *      文章分类
+         *      文章点赞表
          */
         removeById(articleId);
         articleContentService
@@ -190,18 +188,21 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
         //删除相关评论
         List<ArticleComment> articleComments = articleCommentService
                 .lambdaQuery().eq(ArticleComment::getArticleId, articleId).list();
+
         if (CollectionUtil.isNotEmpty(articleComments)) {
             articleComments.forEach(articleComment -> {
                 commentInfoService.removeById(articleComment.getCommentId());
+                articleCommentService.removeById(articleComment);
             });
-
-            articleCommentService.removeByIds(articleComments);
         }
 
         //分类操作
         ArticleCategory category = articleCategoryService.getCategoryByArticleId(articleId);
         categoryInfoService.updateCategoryNumById(category.getCategoryId(), -1);
 
+        //文章点赞
+        articleLoverService
+                .lambdaUpdate().eq(ArticleLover::getArticleId, articleId).remove();
         return true;
     }
 
