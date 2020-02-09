@@ -34,7 +34,7 @@ public class ArticleLover implements Serializable {
      * id
      */
     @TableId(value = "id", type = IdType.INPUT)
-    private long id;
+    private Long id;
 
     /**
      * 用户id
