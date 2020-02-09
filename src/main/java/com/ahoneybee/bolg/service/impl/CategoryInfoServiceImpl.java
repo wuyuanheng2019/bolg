@@ -49,14 +49,14 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
          * 4 整合并进行封装
          */
         List<CategoryInfo> list = new ArrayList<>();
-        List<String> listStr = Collections.synchronizedList(new ArrayList<>());
+        List<String> listStr = new ArrayList<>();
         CategoryInfo categoryInfo = baseMapper.listCategoryByArticleId(articleId);
 
         //存放
-        findInfoUp(categoryInfo, list).parallelStream().forEach(info -> {
+        findInfoUp(categoryInfo, list).forEach(info -> {
             listStr.add(info.getName());
         });
-        return listStr;
+        return CollectionUtil.reverse(listStr);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
     public void updateCategoryNumById(Long categoryId, int num) {
 
         List<CategoryInfo> list = new ArrayList<>();
-        CategoryInfo categoryInfo = baseMapper.listCategoryByArticleId(categoryId);
+        CategoryInfo categoryInfo = getById(categoryId);
 
         //更新节点下的文章数量
         findInfoUp(categoryInfo, list).forEach(info -> {
@@ -173,6 +173,13 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
          */
         ArticleCategory one = articleCategoryService.getCategoryByArticleId(articleCategory.getArticleId());
         if (!articleCategory.getCategoryId().equals(one.getCategoryId())) {
+
+            //更新文章分类关系表
+            articleCategoryService
+                    .lambdaUpdate()
+                    .eq(ArticleCategory::getArticleId, articleCategory.getArticleId())
+                    .set(ArticleCategory::getCategoryId, articleCategory.getCategoryId())
+                    .update();
 
             //当前分类 +1，之前分类 -1
             updateNumber(articleCategory.getCategoryId(), 1);

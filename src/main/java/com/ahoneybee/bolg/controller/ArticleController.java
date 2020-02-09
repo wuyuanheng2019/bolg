@@ -80,7 +80,7 @@ public class ArticleController {
 
 
     @GetMapping("/any/{categoryId}")
-    @ApiModelProperty(value = "categoryId", example = "1", required = true)
+    @ApiModelProperty(value = "id", example = "1", required = true)
     @ApiOperation(value = "通过分类id查找文章", notes = "通过分类id查找文章")
     public PageInfo<ArticleInfoCategoryVo> listArticleInfoByCategory(@PathVariable Long categoryId, MyPages pages) {
         return articleInfoService.listArticleInfoByCategory(categoryId, pages);

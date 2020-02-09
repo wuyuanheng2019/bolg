@@ -29,7 +29,7 @@ public interface ArticleInfoMapper extends BaseMapper<ArticleInfo> {
     /**
      * 按分类，时间降序查询全部文章
      *
-     * @param categoryIds 分类id
+     * @param categoryId 分类id
      * @return list
      */
     @Select({"<script>",
@@ -37,13 +37,13 @@ public interface ArticleInfoMapper extends BaseMapper<ArticleInfo> {
                     "from article_info as a, article_category as ac,category_info as c ",
             "where c.id = ac.category_id and a.id = ac.article_id ",
             "and c.id in",
-            "  <foreach item= 'categoryIds' index= 'index' collection= 'list'",
+            "  <foreach item= 'categoryId' index= 'index' collection= 'list'",
             "      open='(' separator=',' close=')'>",
             "        #{categoryId}",
             "  </foreach>",
-            "order by create_by desc",
+            "order by create_time desc",
             "</script>"})
-    List<ArticleInfo> listArticleInfoByCategory(List<Long> categoryIds);
+    List<ArticleInfo> listArticleInfoByCategory(List<Long> categoryId);
 
     /**
      * 插入文章信息

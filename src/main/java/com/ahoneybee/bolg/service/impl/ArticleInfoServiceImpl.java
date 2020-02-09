@@ -210,7 +210,11 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
                                       ArticleCategory articleCategory) {
         //更新文章以及文章内容
         updateById(articleInfo);
-        articleContentService.updateById(articleContent);
+        articleContentService
+                .lambdaUpdate()
+                .eq(ArticleContent::getArticleId, articleContent.getArticleId())
+                .set(ArticleContent::getContent, articleContent.getContent())
+                .update();
 
         //更新文章分类信息
         categoryInfoService.updateByArticleId(articleCategory);

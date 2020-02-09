@@ -119,7 +119,9 @@ public class TreeUtils {
                         new Node(commentInfo, commentInfo.getId(),
                                 commentInfo.getParentId(), null));
             });
-        } else {
+        }
+
+        if (CollectionUtil.isNotEmpty(categoryInfos)) {
             categoryInfos.forEach(categoryInfo -> {
                 children.add(
                         new Node(categoryInfo, categoryInfo.getId(),

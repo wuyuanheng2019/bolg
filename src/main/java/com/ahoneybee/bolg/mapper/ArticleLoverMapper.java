@@ -41,6 +41,6 @@ public interface ArticleLoverMapper extends BaseMapper<ArticleLover> {
      * @param aid 文章id
      * @return id
      */
-    @Select("select su.id from article_lover al, sys_user su where su.ip = #{remoteAddr} and su.id = al.user_id and al.article_id = #{aid}")
+    @Select("select su.id from article_lover al, sys_user su where su.ip = #{ip} and su.id = al.user_id and al.article_id = #{aid}")
     Long getLoveTrueOrFalse(String ip, long aid);
 }
