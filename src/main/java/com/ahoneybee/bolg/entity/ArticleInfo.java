@@ -1,13 +1,16 @@
 package com.ahoneybee.bolg.entity;
 
-import java.time.LocalDateTime;
-import java.io.Serializable;
-
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -18,10 +21,11 @@ import lombok.experimental.Accessors;
  * @since 2020-02-04
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Accessors(chain = true)
+@TableName("article_info")
+@EqualsAndHashCode(callSuper = false)
 public class ArticleInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -29,6 +33,7 @@ public class ArticleInfo implements Serializable {
     /**
      * id
      */
+    @TableId(value = "id", type = IdType.INPUT)
     private Long id;
 
     /**
@@ -44,12 +49,12 @@ public class ArticleInfo implements Serializable {
     /**
      * 文章访问次数
      */
-    private Integer traffic;
+    private Long traffic;
 
     /**
      * 点赞人数
      */
-    private Integer loveNum;
+    private Long loveNum;
 
     /**
      * 创建时间

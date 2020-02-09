@@ -1,27 +1,31 @@
 package com.ahoneybee.bolg.entity;
 
-import java.time.LocalDateTime;
-import java.io.Serializable;
-
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author wuyuanheng
  * @since 2020-02-05
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Accessors(chain = true)
+@TableName("article_lover")
+@EqualsAndHashCode(callSuper = false)
 public class ArticleLover implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -29,17 +33,18 @@ public class ArticleLover implements Serializable {
     /**
      * id
      */
+    @TableId(value = "id", type = IdType.INPUT)
     private long id;
 
     /**
      * 用户id
      */
-    private Integer userId;
+    private Long userId;
 
     /**
      * 文章id
      */
-    private Integer articleId;
+    private Long articleId;
 
     /**
      * 创建时间

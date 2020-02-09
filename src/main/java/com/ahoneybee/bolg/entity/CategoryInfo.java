@@ -1,5 +1,8 @@
 package com.ahoneybee.bolg.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,10 +21,11 @@ import java.time.LocalDateTime;
  * @since 2020-02-04
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
+@Accessors(chain = true)
+@TableName("category_info")
+@EqualsAndHashCode(callSuper = false)
 public class CategoryInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -29,7 +33,8 @@ public class CategoryInfo implements Serializable {
     /**
      * id
      */
-    private long id;
+    @TableId(value = "id", type = IdType.INPUT)
+    private Long id;
 
     /**
      * 分类名称
@@ -39,7 +44,7 @@ public class CategoryInfo implements Serializable {
     /**
      * 文章的分类数量
      */
-    private Integer number;
+    private Long number;
 
     /**
      * 父id

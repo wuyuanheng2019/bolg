@@ -1,13 +1,16 @@
 package com.ahoneybee.bolg.entity;
 
-import java.time.LocalDateTime;
-import java.io.Serializable;
-
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -18,10 +21,11 @@ import lombok.experimental.Accessors;
  * @since 2020-02-04
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
+@TableName("sys_user")
+@Accessors(chain = true)
+@EqualsAndHashCode(callSuper = false)
 public class SysUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -29,7 +33,8 @@ public class SysUser implements Serializable {
     /**
      * id
      */
-    private long id;
+    @TableId(value = "id", type = IdType.INPUT)
+    private Long id;
 
     /**
      * 用户名称
@@ -64,7 +69,7 @@ public class SysUser implements Serializable {
     /**
      * 用户登陆次数
      */
-    private Integer num;
+    private Long num;
 
     /**
      * 创建时间

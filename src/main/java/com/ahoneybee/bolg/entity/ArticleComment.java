@@ -1,5 +1,8 @@
 package com.ahoneybee.bolg.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,10 +21,11 @@ import java.time.LocalDateTime;
  * @since 2020-02-04
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Accessors(chain = true)
+@TableName("article_comment")
+@EqualsAndHashCode(callSuper = false)
 public class ArticleComment implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -29,7 +33,8 @@ public class ArticleComment implements Serializable {
     /**
      * id
      */
-    private long id;
+    @TableId(value = "id", type = IdType.INPUT)
+    private Long id;
 
     /**
      * 文章主键
@@ -39,7 +44,7 @@ public class ArticleComment implements Serializable {
     /**
      * 评论主键
      */
-    private long commentId;
+    private Long commentId;
 
     /**
      * 是否被删除: 0为没有

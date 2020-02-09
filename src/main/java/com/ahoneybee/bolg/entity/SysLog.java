@@ -21,11 +21,11 @@ import java.time.LocalDateTime;
  * @since 2020-02-04
  */
 @Data
-@TableName("sys_log")
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@TableName("sys_log")
+@Accessors(chain = true)
+@EqualsAndHashCode(callSuper = false)
 public class SysLog implements Serializable {
 
 
