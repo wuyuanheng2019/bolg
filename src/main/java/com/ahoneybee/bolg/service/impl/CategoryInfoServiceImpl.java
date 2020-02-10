@@ -151,7 +151,6 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
                         }
                     }
             );
-
             //分类
             infos.forEach(
                     categoryInfo -> {
@@ -196,10 +195,8 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
      * @return 分类ids
      */
     private List<CategoryInfo> findInfoDown(Long categoryId, List<CategoryInfo> list) {
-
         //找到子节点
         List<CategoryInfo> categoryInfoList = lambdaQuery().in(CategoryInfo::getParentId, categoryId).list();
-
         if (CollectionUtil.isNotEmpty(categoryInfoList)) {
 
             //一对多的映射关系，多线程调用
@@ -223,7 +220,6 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
     private List<CategoryInfo> findInfoUp(CategoryInfo categoryInfo, List<CategoryInfo> list) {
 
         if (categoryInfo != null) {
-
             //找到父节点并进行操作
             list.add(lambdaQuery()
                     .select(CategoryInfo::getNumber, CategoryInfo::getName, CategoryInfo::getId)

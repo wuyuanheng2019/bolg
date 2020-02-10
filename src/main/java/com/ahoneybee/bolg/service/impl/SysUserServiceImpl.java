@@ -46,7 +46,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                         .eq(SysUser::getIp, user.getIp())
                         .set(SysUser::getNum, user.getNum() + 1).update();
             }
-
         } catch (Exception e) {
             flag = false;
             log.error(e.getMessage(), e);

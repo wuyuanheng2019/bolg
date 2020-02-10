@@ -53,7 +53,6 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
 
     @Override
     public List<ArticleInfo> listArticleInfoByTime(MyPages myPages) {
-
         //传入当前页，条数
         PageHelper.startPage(myPages.getPage(), myPages.getSize());
         return lambdaQuery().orderByDesc(ArticleInfo::getCreateTime).list();
@@ -71,7 +70,6 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
 
     @Override
     public List<Object> getArticle(long articleId) {
-
         //创建封装对象
         List<Object> list = Collections.synchronizedList(new ArrayList<>());
 
@@ -87,18 +85,15 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
 
     @Override
     public void saveTraffic(ArticleInfo articleInfo) {
-
         //访问量自增
         lambdaUpdate()
                 .set(ArticleInfo::getTraffic, articleInfo.getTraffic() + 1)
                 .eq(ArticleInfo::getId, articleInfo.getId())
                 .update();
-
     }
 
     @Override
     public boolean updateArticleInfo(long aid, String ip, boolean flag) {
-
         //nginx配置ip，检验
         Ip2Region.judgeIp(ip);
 
@@ -133,7 +128,6 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
 
     @Override
     public boolean postArticle(Map<String, Object> map) {
-
         /*
          * 1 读取前台传入的文章信息
          * 2 保存，并创建文章及其分类关联信息
@@ -152,7 +146,6 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
 
     @Override
     public boolean updateArticle(Map<String, Object> map) {
-
         /*
          * 1 读取前台信息
          * 2 更新 (校验分类是否改变)
@@ -163,16 +156,14 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
         if (ObjectUtils.isEmpty(articleVo)) {
             return false;
         }
-
         //db操作(更新)
-        UpdateArticleAndInfo(articleVo.getArticleInfo(),
+        updatearticleandinfo(articleVo.getArticleInfo(),
                 articleVo.getArticleContent(), articleVo.getArticleCategory());
         return true;
     }
 
     @Override
     public boolean deleteArticle(long articleId) {
-
         /*
          * 删除文章信息
          *      文章内容
@@ -206,7 +197,7 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
         return true;
     }
 
-    private void UpdateArticleAndInfo(ArticleInfo articleInfo, ArticleContent articleContent,
+    private void updatearticleandinfo(ArticleInfo articleInfo, ArticleContent articleContent,
                                       ArticleCategory articleCategory) {
         //更新文章以及文章内容
         updateById(articleInfo);
@@ -252,7 +243,6 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
      * @return vo
      */
     private ArticleInfoCategoryVo getArticleVo(Map<String, Object> map) {
-
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             ArticleInfo articleInfo = objectMapper.readValue(
@@ -286,10 +276,8 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
      * @return 封装vo信息 <father - son>
      */
     private PageInfo<ArticleInfoCategoryVo> getArticleInfoCategoryVo(List<ArticleInfo> infos) {
-
         //注意并发安全问题
         List<ArticleInfoCategoryVo> voList = Collections.synchronizedList(new ArrayList<>());
-
         //封装分类信息
         infos.parallelStream()
                 .forEach(articleInfo ->
@@ -297,7 +285,6 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
                                 categoryInfoService.listCategoryByArticleId(articleInfo.getId())
                                 , null, null))
                 );
-
         //封装结果集
         return new PageInfo<>(voList);
     }
