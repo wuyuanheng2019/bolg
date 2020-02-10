@@ -15,22 +15,22 @@ spring:
   # redis配置
   redis:
     # redis 服务器地址
-    host: 49.234.182.170
+    host:
     # 端口
     port: 6379
     # 链接超时时间
-    timeout: 5000
+    timeout: 5000s
     jedis:
       pool:
         # 连接池最大连结数
         max-active: 8
         # 连接池最大阻塞时间
-        max-wait: 1
+        max-wait: 1s
         # 连接池中最大空闲链接
         max-idle: 8
         # 连接池中最小空闲链接
         min-idle: 0
-    password: wyh8231808@#@#
+    password:
 
 # mybatis-plush配置
 mybatis-plus:
