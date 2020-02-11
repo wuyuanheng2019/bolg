@@ -39,7 +39,6 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
     @Autowired
     private IArticleInfoService articleInfoService;
 
-
     @Override
     public List<String> listCategoryByArticleId(Long articleId) {
 
@@ -62,7 +61,6 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
 
     @Override
     public List<Long> findSon(Long categoryId) {
-
         /*
          * 1 找到当前节点下是否存在子节点
          * 2 有：继续做便利添加操作，反之则遍历查找
@@ -127,7 +125,6 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean deleteById(Long id) {
-
         /*
          * 1 找到当前节点的子节点集合
          * 2 找到当前分类下的文章，并统计数量
@@ -166,7 +163,6 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateByArticleId(ArticleCategory articleCategory) {
-
         /*
          *  1 查看当前分类是否改变
          *  2 如改变，则进行修改，反之则不动

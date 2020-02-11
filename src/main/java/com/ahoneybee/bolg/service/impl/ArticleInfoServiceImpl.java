@@ -239,7 +239,6 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
 
         //更新分类及其父分类 num++
         categoryInfoService.updateCategoryNumById(articleCategory.getCategoryId(), 1);
-
     }
 
 
@@ -267,8 +266,9 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
                     || ObjectUtils.isEmpty(articleCategory)) {
                 throw new RuntimeException("前台信息传送缺失!!!");
             }
-            return new ArticleInfoCategoryVo(articleInfo, null, articleContent, articleCategory);
 
+            return new ArticleInfoCategoryVo(articleInfo, null,
+                    articleContent, articleCategory);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -291,7 +291,6 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
                         categoryInfoService.listCategoryByArticleId(articleInfo.getId())
                         , null, null))
         );
-
         //封装结果集
         PageInfo<ArticleInfoCategoryVo> voPageInfo = new PageInfo<>(voList);
         voPageInfo.setTotal(pageInfo.getTotal());
