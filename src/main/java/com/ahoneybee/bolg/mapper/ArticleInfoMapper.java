@@ -23,7 +23,7 @@ public interface ArticleInfoMapper extends BaseMapper<ArticleInfo> {
      * @param aid 文章id
      * @param i   自增
      */
-    @Update("update article_info set love_num = love_num + #{flag} where id = #{id}")
+    @Update("update article_info set love_num = love_num + #{i} where id = #{id}")
     void updateArticleLov(long aid, int i);
 
     /**

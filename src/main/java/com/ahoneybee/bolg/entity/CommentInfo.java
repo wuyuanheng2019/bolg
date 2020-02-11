@@ -42,11 +42,6 @@ public class CommentInfo implements Serializable {
     private String content;
 
     /**
-     * 联系方式
-     */
-    private String connect;
-
-    /**
      * 昵称
      */
     private String name;

@@ -1,6 +1,5 @@
 package com.ahoneybee.bolg.service;
 
-import com.ahoneybee.bolg.entity.ArticleComment;
 import com.ahoneybee.bolg.entity.CommentInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -23,4 +22,12 @@ public interface ICommentInfoService extends IService<CommentInfo> {
      * @return 评论信息
      */
     List<CommentInfo> listInfoByArticleId(long articleId);
+
+    /**
+     * 插入评论信息
+     *
+     * @param commentInfo 评论信息
+     * @return id
+     */
+    long insertCommentInfo(CommentInfo commentInfo);
 }

@@ -23,4 +23,9 @@ public class CommentInfoServiceImpl extends ServiceImpl<CommentInfoMapper, Comme
     public List<CommentInfo> listInfoByArticleId(long articleId) {
         return baseMapper.listInfoByArticleId(articleId);
     }
+
+    @Override
+    public long insertCommentInfo(CommentInfo commentInfo) {
+        return baseMapper.insertCommentInfo(commentInfo);
+    }
 }

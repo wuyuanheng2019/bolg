@@ -10,6 +10,7 @@ import com.ahoneybee.bolg.service.ICategoryInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,6 +83,7 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateCategoryNumById(Long categoryId, int num) {
 
         List<CategoryInfo> list = new ArrayList<>();
@@ -106,6 +108,7 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateNumber(Long categoryId, int number) {
 
         //得到当前分类
@@ -122,6 +125,7 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean deleteById(Long id) {
 
         /*
@@ -164,6 +168,7 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateByArticleId(ArticleCategory articleCategory) {
 
         /*

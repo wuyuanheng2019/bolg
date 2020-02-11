@@ -22,4 +22,12 @@ public interface CommentInfoMapper extends BaseMapper<CommentInfo> {
             "ON ar.comment_id = info.id " +
             "WHERE ar.article_id = #{articleId}")
     List<CommentInfo> listInfoByArticleId(long articleId);
+
+    /**
+     * 插入评论信息
+     *
+     * @param commentInfo 评论信息
+     * @return id
+     */
+    long insertCommentInfo(CommentInfo commentInfo);
 }

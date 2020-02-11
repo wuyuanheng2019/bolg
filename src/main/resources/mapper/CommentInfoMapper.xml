@@ -2,4 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ahoneybee.bolg.mapper.CommentInfoMapper">
 
+    <insert id="insertCommentInfo" parameterType="com.ahoneybee.bolg.entity.CommentInfo"
+            useGeneratedKeys="true" keyProperty="id">
+              insert into comment_info (content, `name`,ip,user_id,parent_id)
+              values (#{content}, #{name}, #{ip}, #{userId}, #{parentId})
+    </insert>
 </mapper>

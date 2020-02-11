@@ -57,11 +57,6 @@ public class SysUser implements Serializable {
     private String region;
 
     /**
-     * 联系方式
-     */
-    private String connect;
-
-    /**
      * 用户ip
      */
     private String ip;

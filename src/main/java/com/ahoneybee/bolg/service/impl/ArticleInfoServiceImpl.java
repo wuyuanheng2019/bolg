@@ -15,6 +15,7 @@ import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,19 +53,19 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
 
 
     @Override
-    public List<ArticleInfo> listArticleInfoByTime(MyPages myPages) {
+    public PageInfo<ArticleInfo> listArticleInfoByTime(MyPages myPages) {
         //传入当前页，条数
         PageHelper.startPage(myPages.getPage(), myPages.getSize());
-        return lambdaQuery().orderByDesc(ArticleInfo::getCreateTime).list();
+        List<ArticleInfo> list = lambdaQuery().orderByDesc(ArticleInfo::getCreateTime).list();
+        return new PageInfo<>(list);
     }
 
     @Override
     public PageInfo<ArticleInfoCategoryVo> listArticleInfo(MyPages myPages) {
 
         //时间降序查询
-        PageHelper.startPage(myPages.getPage(), myPages.getSize());
-        List<ArticleInfo> infos = listArticleInfoByTime(myPages);
-        return getArticleInfoCategoryVo(infos);
+        PageInfo<ArticleInfo> articleInfoPageInfo = listArticleInfoByTime(myPages);
+        return getArticleInfoCategoryVo(articleInfoPageInfo);
 
     }
 
@@ -93,6 +94,7 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean updateArticleInfo(long aid, String ip, boolean flag) {
         //nginx配置ip，检验
         Ip2Region.judgeIp(ip);
@@ -122,11 +124,13 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
 
         //查询文章信息
         List<ArticleInfo> infos = baseMapper.listArticleInfoByCategory(categoryIds);
-        return getArticleInfoCategoryVo(infos);
+        PageInfo<ArticleInfo> pageInfo = new PageInfo<>(infos);
+        return getArticleInfoCategoryVo(pageInfo);
 
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean postArticle(Map<String, Object> map) {
         /*
          * 1 读取前台传入的文章信息
@@ -145,6 +149,7 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean updateArticle(Map<String, Object> map) {
         /*
          * 1 读取前台信息
@@ -163,6 +168,7 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean deleteArticle(long articleId) {
         /*
          * 删除文章信息
@@ -272,21 +278,25 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
     /**
      * 添加分类信息
      *
-     * @param infos 文章信息
+     * @param pageInfo 文章信息
      * @return 封装vo信息 <father - son>
      */
-    private PageInfo<ArticleInfoCategoryVo> getArticleInfoCategoryVo(List<ArticleInfo> infos) {
+    private PageInfo<ArticleInfoCategoryVo> getArticleInfoCategoryVo(PageInfo<ArticleInfo> pageInfo) {
         //注意并发安全问题
-        List<ArticleInfoCategoryVo> voList = Collections.synchronizedList(new ArrayList<>());
+        List<ArticleInfoCategoryVo> voList = new ArrayList<>();
         //封装分类信息
-        infos.parallelStream()
-                .forEach(articleInfo ->
-                        voList.add(new ArticleInfoCategoryVo(articleInfo,
-                                categoryInfoService.listCategoryByArticleId(articleInfo.getId())
-                                , null, null))
-                );
+        pageInfo.getList().forEach(articleInfo ->
+                voList.add(new ArticleInfoCategoryVo(articleInfo,
+                        categoryInfoService.listCategoryByArticleId(articleInfo.getId())
+                        , null, null))
+        );
+
         //封装结果集
-        return new PageInfo<>(voList);
+        PageInfo<ArticleInfoCategoryVo> voPageInfo = new PageInfo<>(voList);
+        voPageInfo.setTotal(pageInfo.getTotal());
+        voPageInfo.setPageSize(pageInfo.getPageSize());
+        voPageInfo.setPageNum(pageInfo.getPageNum());
+        return voPageInfo;
     }
 
 }

@@ -3,8 +3,9 @@
 <mapper namespace="com.ahoneybee.bolg.mapper.ArticleInfoMapper">
 
 
-    <insert id="insertArticleInfo" parameterType="com.ahoneybee.bolg.entity.ArticleInfo" useGeneratedKeys="true"
-            keyProperty="id">
+    <insert id="insertArticleInfo" parameterType="com.ahoneybee.bolg.entity.ArticleInfo"
+            useGeneratedKeys="true" keyProperty="id">
         insert into article_info (title, summary) values (#{title}, #{summary})
     </insert>
+
 </mapper>

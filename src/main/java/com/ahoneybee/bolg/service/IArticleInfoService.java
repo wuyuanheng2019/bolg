@@ -26,7 +26,7 @@ public interface IArticleInfoService extends IService<ArticleInfo> {
      * @param myPages 分页查询条件
      * @return 结果集
      */
-    List<ArticleInfo> listArticleInfoByTime(MyPages myPages);
+    PageInfo<ArticleInfo> listArticleInfoByTime(MyPages myPages);
 
     /**
      * 文章列表
