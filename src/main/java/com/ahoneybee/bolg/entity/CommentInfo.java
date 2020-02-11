@@ -72,19 +72,7 @@ public class CommentInfo implements Serializable {
     private LocalDateTime createTime;
 
     /**
-     * 创建人
-     */
-    private String createPersion;
-
-    /**
      * 修改时间
      */
     private LocalDateTime updateTime;
-
-    /**
-     * 修改人
-     */
-    private String updatePersion;
-
-
 }

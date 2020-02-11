@@ -56,11 +56,4 @@ public class SysLog implements Serializable {
      * 访问时间
      */
     private LocalDateTime createTime;
-
-    /**
-     * 访问人
-     */
-    private String createPersion;
-
-
 }

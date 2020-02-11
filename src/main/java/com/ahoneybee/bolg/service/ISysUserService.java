@@ -24,7 +24,6 @@ public interface ISysUserService extends IService<SysUser> {
      */
     boolean saveUser(HttpServletRequest request);
 
-
     /**
      * 通过ip来查询用户
      *
@@ -33,7 +32,6 @@ public interface ISysUserService extends IService<SysUser> {
      */
     SysUser getByIp(String ip);
 
-
     /**
      * 获取用户数量
      *
@@ -41,13 +39,19 @@ public interface ISysUserService extends IService<SysUser> {
      */
     long getUserNum();
 
-
     /**
      * 获取用户总访问量
      *
      * @return 总量
      */
     long getUserLogNum();
+
+    /**
+     * 获取用户密码
+     *
+     * @return password
+     */
+    String getPasswordByUsername(String username);
 
     /**
      * 登陆

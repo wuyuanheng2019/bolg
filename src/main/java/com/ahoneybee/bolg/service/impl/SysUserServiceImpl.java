@@ -72,22 +72,22 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public String login(String username, String password) {
+    public String getPasswordByUsername(String username) {
+        return baseMapper.getPasswordByUsername(username);
+    }
 
+    @Override
+    public String login(String username, String password) {
+        String dbPwd = getPasswordByUsername(username);
         //通过用户名得到密码
-        String dbPwd = baseMapper.getPasswordByUsername(username);
         if (StringUtils.isNotEmpty(dbPwd)) {
             if (!password.equals(dbPwd)) {
                 return "false";
             }
-
-            //md5撒盐加密
+            //MD5 撒盐加密
             MD5 md5 = new MD5("WYH--@#¥".getBytes());
-            return username + "" + md5.digestHex(password);
-
+            return username + "." + md5.digestHex(password);
         }
         return "false";
     }
-
-
 }

@@ -50,11 +50,4 @@ public class ArticleLover implements Serializable {
      * 创建时间
      */
     private LocalDateTime createTime;
-
-    /**
-     * 创建人
-     */
-    private String createPersion;
-
-
 }
