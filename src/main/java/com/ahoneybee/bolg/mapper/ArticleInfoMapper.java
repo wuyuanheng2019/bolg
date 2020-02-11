@@ -2,6 +2,7 @@ package com.ahoneybee.bolg.mapper;
 
 import com.ahoneybee.bolg.entity.ArticleInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -20,11 +21,11 @@ public interface ArticleInfoMapper extends BaseMapper<ArticleInfo> {
     /**
      * 文章点赞+1
      *
-     * @param aid 文章id
-     * @param i   自增
+     * @param id   文章id
+     * @param flag 自增
      */
-    @Update("update article_info set love_num = love_num + #{i} where id = #{id}")
-    void updateArticleLov(long aid, int i);
+    @Update("update article_info set love_num = love_num + #{flag} where id = #{id}")
+    void updateArticleLov(@Param("id") long id, @Param("flag") int flag);
 
     /**
      * 按分类，时间降序查询全部文章

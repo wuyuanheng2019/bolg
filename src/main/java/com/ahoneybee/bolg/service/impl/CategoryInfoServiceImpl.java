@@ -135,35 +135,31 @@ public class CategoryInfoServiceImpl extends ServiceImpl<CategoryInfoMapper, Cat
          */
         List<CategoryInfo> categoryInfoList = new ArrayList<>();
         List<CategoryInfo> infos = findInfoDown(id, categoryInfoList);
+        infos.add(getById(id));
 
         //删除文章，分类
-        if (CollectionUtil.isNotEmpty(infos)) {
-            infos.forEach(
-                    categoryInfo -> {
-
-                        //查找文章分类关联
-                        List<ArticleCategory> categories = articleCategoryService.lambdaQuery()
-                                .eq(ArticleCategory::getCategoryId, categoryInfo.getId())
-                                .list();
-                        //delete
-                        if (CollectionUtil.isNotEmpty(categories)) {
-                            categories.forEach(
-                                    articleCategory -> {
-                                        articleInfoService.deleteArticle(articleCategory.getArticleId());
-                                    }
-                            );
-                        }
+        infos.forEach(
+                categoryInfo -> {
+                    //查找文章分类关联
+                    List<ArticleCategory> categories = articleCategoryService.lambdaQuery()
+                            .eq(ArticleCategory::getCategoryId, categoryInfo.getId())
+                            .list();
+                    //delete
+                    if (CollectionUtil.isNotEmpty(categories)) {
+                        categories.forEach(
+                                articleCategory -> {
+                                    articleInfoService.deleteArticle(articleCategory.getArticleId());
+                                }
+                        );
                     }
-            );
-            //分类
-            infos.forEach(
-                    categoryInfo -> {
-                        lambdaUpdate().eq(CategoryInfo::getId, categoryInfo.getId()).remove();
-                    }
-            );
-        }
-
-        removeById(id);
+                }
+        );
+        //分类
+        infos.forEach(
+                categoryInfo -> {
+                    lambdaUpdate().eq(CategoryInfo::getId, categoryInfo.getId()).remove();
+                }
+        );
         return true;
     }
 

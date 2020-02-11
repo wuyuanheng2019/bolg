@@ -196,6 +196,7 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
         //分类操作
         ArticleCategory category = articleCategoryService.getCategoryByArticleId(articleId);
         categoryInfoService.updateCategoryNumById(category.getCategoryId(), -1);
+        articleCategoryService.removeById(category.getId());
 
         //文章点赞
         articleLoverService
