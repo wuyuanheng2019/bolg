@@ -56,7 +56,8 @@ public class ArticleInfoServiceImpl extends ServiceImpl<ArticleInfoMapper, Artic
     public PageInfo<ArticleInfo> listArticleInfoByTime(MyPages myPages) {
         //传入当前页，条数
         PageHelper.startPage(myPages.getPage(), myPages.getSize());
-        List<ArticleInfo> list = lambdaQuery().orderByDesc(ArticleInfo::getCreateTime).list();
+        List<ArticleInfo> list = lambdaQuery()
+                .orderByDesc(ArticleInfo::getCreateTime).list();
         return new PageInfo<>(list);
     }
 

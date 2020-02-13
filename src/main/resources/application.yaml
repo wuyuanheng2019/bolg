@@ -4,7 +4,7 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/myblog
     username: root
     driver-class-name: com.mysql.cj.jdbc.Driver
-    password: password
+    password: root
   # 设置上传文件的大小
   servlet:
     multipart:
@@ -15,7 +15,7 @@ spring:
   # redis配置
   redis:
     # redis 服务器地址
-    host:
+    host: 127.0.0.1
     # 端口
     port: 6379
     # 链接超时时间
