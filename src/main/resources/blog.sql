@@ -11,7 +11,7 @@
  Target Server Version : 80019
  File Encoding         : 65001
 
- Date: 13/02/2020 14:52:54
+ Date: 14/02/2020 19:05:47
 */
 
 SET NAMES utf8mb4;
@@ -89,9 +89,9 @@ CREATE TABLE `article_info`  (
 -- ----------------------------
 -- Records of article_info
 -- ----------------------------
-INSERT INTO `article_info` VALUES (1, 'vue常用命令', '让后端开发的你对vue有一次全新的认识', 3, 0, '2020-02-13 06:34:08', '2020-02-13 06:41:54');
-INSERT INTO `article_info` VALUES (2, '关于', '关于', 13, 0, '2020-02-13 06:35:18', '2020-02-13 06:51:48');
-INSERT INTO `article_info` VALUES (3, '公告', '公告', 10, 0, '2020-02-13 06:36:40', '2020-02-13 06:51:45');
+INSERT INTO `article_info` VALUES (1, 'vue常用命令', '让后端开发的你对vue有一次全新的认识', 7, 0, '2020-02-13 06:34:08', '2020-02-13 12:41:45');
+INSERT INTO `article_info` VALUES (2, '关于', '关于', 21, 0, '2020-02-13 06:35:18', '2020-02-13 12:25:00');
+INSERT INTO `article_info` VALUES (3, '公告', '公告', 17, 0, '2020-02-13 06:36:40', '2020-02-13 12:27:37');
 
 -- ----------------------------
 -- Table structure for article_lover
@@ -103,7 +103,7 @@ CREATE TABLE `article_lover`  (
   `article_id` bigint(0) NULL DEFAULT NULL COMMENT '文章id',
   `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '文章点赞表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '文章点赞表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for article_picture
@@ -116,7 +116,7 @@ CREATE TABLE `article_picture`  (
   `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
   `update_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '文章图片表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '文章图片表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for category_info
@@ -130,13 +130,13 @@ CREATE TABLE `category_info`  (
   `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
   `update_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '分类信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '分类信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of category_info
 -- ----------------------------
 INSERT INTO `category_info` VALUES (1, 'computer', 1, NULL, '2020-02-13 06:30:29', '2020-02-13 06:34:08');
-INSERT INTO `category_info` VALUES (2, '生活', 2, NULL, '2020-02-13 06:30:35', '2020-02-13 06:48:26');
+INSERT INTO `category_info` VALUES (2, '生活', 0, NULL, '2020-02-13 06:30:35', '2020-02-13 07:09:09');
 INSERT INTO `category_info` VALUES (3, '后端', 0, 1, '2020-02-13 06:31:55', '2020-02-13 06:31:55');
 INSERT INTO `category_info` VALUES (4, 'java', 0, 3, '2020-02-13 06:32:08', '2020-02-13 06:32:08');
 INSERT INTO `category_info` VALUES (5, '前端', 1, 1, '2020-02-13 06:32:26', '2020-02-13 06:34:08');
@@ -171,7 +171,7 @@ CREATE TABLE `sys_log`  (
   `operate_by` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '访问的浏览器',
   `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '访问时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统日志' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for sys_me
@@ -206,12 +206,12 @@ CREATE TABLE `sys_user`  (
   `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
   `update_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '人员表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '人员表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
 INSERT INTO `sys_user` VALUES (1, '6', 'amdin', 'Google chrome', '上海', '101.80.85.57', 1, '2020-02-11 04:10:31', '2020-02-11 04:11:32');
-INSERT INTO `sys_user` VALUES (2, NULL, 'ANY', 'Windows-Chrome-73.0.3683.86', NULL, '127.0.0.1', 24, '2020-02-13 06:07:45', '2020-02-13 06:51:41');
+INSERT INTO `sys_user` VALUES (2, NULL, 'ANY', 'Windows-Chrome-73.0.3683.86', NULL, '127.0.0.1', 41, '2020-02-13 06:07:45', '2020-02-14 08:38:36');
 
 SET FOREIGN_KEY_CHECKS = 1;
