@@ -12,9 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * <p>
- * 文章分类关联表
- * </p>
  *
  * @author wuyuanheng
  * @since 2020-02-09
